@@ -3,6 +3,12 @@ using UnityEngine;
 public class DungPile : MonoBehaviour
 {
     public float dungSize = 1f;
+    private DungPileSpawner spawner;
+
+    private void Start()
+    {
+        spawner = FindObjectOfType<DungPileSpawner>();
+    }
 
     private void OnTriggerEnter(Collider other)
     {
@@ -13,8 +19,14 @@ public class DungPile : MonoBehaviour
             {
                 Debug.Log("拾取大便");
                 dungBeetle.PickUpDung(this);
+                if (spawner != null)
+                {
+                    spawner.RemoveDungPile(gameObject);
+                }
                 Destroy(gameObject);
-            }else{
+            }
+            else
+            {
                 Debug.Log("dungBeetle is null");
             }
         }
