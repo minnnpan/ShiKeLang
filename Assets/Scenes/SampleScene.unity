@@ -202,7 +202,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 8194991655463932415, guid: 64494c9055ac84a9b82ad5f14e911db7, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -6563,7 +6564,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 8194991655463932415, guid: 64494c9055ac84a9b82ad5f14e911db7, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -11461,6 +11463,54 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1737906557}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1277248816
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1277248817}
+  - component: {fileID: 1277248818}
+  m_Layer: 0
+  m_Name: DungTrailManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1277248817
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1277248816}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1758339994}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1277248818
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1277248816}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b9e26b38e19a4d9bbf0b6d6861003ae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  decalPrefab: {fileID: 3788137433048347467, guid: 720d0d65dd64a45889d370427c95fc92,
+    type: 3}
+  decalLifetime: 10
+  maxDecals: 100
 --- !u!4 &1289324169 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400000, guid: b52b81b030ecb374b8bd4d13693f428d,
@@ -13094,17 +13144,17 @@ PrefabInstance:
     - target: {fileID: 8528636312650393363, guid: 64494c9055ac84a9b82ad5f14e911db7,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -10.7
+      value: 4.62
       objectReference: {fileID: 0}
     - target: {fileID: 8528636312650393363, guid: 64494c9055ac84a9b82ad5f14e911db7,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.6
+      value: 1.09
       objectReference: {fileID: 0}
     - target: {fileID: 8528636312650393363, guid: 64494c9055ac84a9b82ad5f14e911db7,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -10.01
+      value: 0.81
       objectReference: {fileID: 0}
     - target: {fileID: 8528636312650393363, guid: 64494c9055ac84a9b82ad5f14e911db7,
         type: 3}
@@ -13141,7 +13191,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 8194991655463932415, guid: 64494c9055ac84a9b82ad5f14e911db7, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -16749,6 +16800,38 @@ Transform:
   m_Children: []
   m_Father: {fileID: 368678543}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1758339993
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1758339994}
+  m_Layer: 0
+  m_Name: Managers
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1758339994
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1758339993}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -9.220297, y: 0.3, z: -6.4237285}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1277248817}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1760175175 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400000, guid: 26c83b67f03c7d2479fc3cc426e0b49b,
@@ -17801,7 +17884,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 8194991655463932415, guid: 64494c9055ac84a9b82ad5f14e911db7, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -18364,7 +18448,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 8194991655463932415, guid: 64494c9055ac84a9b82ad5f14e911db7, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -20497,7 +20582,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 8194991655463932415, guid: 64494c9055ac84a9b82ad5f14e911db7, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -20512,19 +20598,41 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2541230159999249664, guid: d27ed11bd259a4fa8bb7f754606be071,
         type: 3}
+      propertyPath: paintSphere
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 2541230159999249664, guid: d27ed11bd259a4fa8bb7f754606be071,
+        type: 3}
+      propertyPath: trailManager
+      value: 
+      objectReference: {fileID: 1277248818}
+    - target: {fileID: 2541230159999249664, guid: d27ed11bd259a4fa8bb7f754606be071,
+        type: 3}
       propertyPath: dungBallPrefab
       value: 
       objectReference: {fileID: 4389424521977489072, guid: 0a1a4e6c2418046878ef7f8a81ed836c,
         type: 3}
+    - target: {fileID: 2541230159999249664, guid: d27ed11bd259a4fa8bb7f754606be071,
+        type: 3}
+      propertyPath: dungTrailPrefab
+      value: 
+      objectReference: {fileID: 3788137433048347467, guid: 720d0d65dd64a45889d370427c95fc92,
+        type: 3}
+    - target: {fileID: 2541230159999249664, guid: d27ed11bd259a4fa8bb7f754606be071,
+        type: 3}
+      propertyPath: decalProjectorPrefab
+      value: 
+      objectReference: {fileID: 6007356740952133931, guid: 6bdb7f54fbc0b4e51a3af07c68d0b6f0,
+        type: 3}
     - target: {fileID: 3188418632399302883, guid: d27ed11bd259a4fa8bb7f754606be071,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1.08
+      value: 1.74
       objectReference: {fileID: 0}
     - target: {fileID: 3188418632399302883, guid: d27ed11bd259a4fa8bb7f754606be071,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.97
+      value: 3.48
       objectReference: {fileID: 0}
     - target: {fileID: 3188418632399302883, guid: d27ed11bd259a4fa8bb7f754606be071,
         type: 3}
@@ -20593,3 +20701,4 @@ SceneRoots:
   - {fileID: 780086877}
   - {fileID: 15261723}
   - {fileID: 1486414245}
+  - {fileID: 1758339994}

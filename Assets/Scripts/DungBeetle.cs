@@ -20,11 +20,16 @@ public class DungBeetle : MonoBehaviour
     public event Action<float> OnDungPickup;
     public event Action<float> OnDungDrop;
 
+    // decal system
+    [SerializeField] private DungTrailManager trailManager;
+    [SerializeField] private float decalSpawnInterval = 0.5f;
+    private float lastDecalSpawnTime;
+
     private void Start()
     {
         DOTween.SetTweensCapacity(500, 50);
         currentMoveSpeed = baseMoveSpeed;
-        fixedYPosition = transform.position.y;
+        fixedYPosition = 0.1f; // 设置一个接近地面的固定高度
     }
 
     public void PickUpDung(DungPile dungPile)
@@ -72,11 +77,42 @@ public class DungBeetle : MonoBehaviour
             transform.forward = movement;
             UpdateDungBallPosition();
             SimulateDungBallRoll(movement);
-        }
 
-        if (Input.GetKeyDown(KeyCode.Space) && HasDung)
+            if (HasDung && Input.GetKey(KeyCode.Space))
+            {
+                ShrinkDungBall();
+                if (Time.time - lastDecalSpawnTime > decalSpawnInterval)
+                {
+                    SpawnDungDecal();
+                    lastDecalSpawnTime = Time.time;
+                }
+            }
+        }
+    }
+
+    private void SpawnDungDecal()
+    {
+        Vector3 rayStart = transform.position + Vector3.up * 0.5f; // 提高射线起点
+        Vector3 rayDirection = Vector3.down;
+        float rayDistance = 1f; // 减小射线距离
+
+        RaycastHit hit;
+        if (Physics.Raycast(rayStart, rayDirection, out hit, rayDistance))
         {
-            DropDung();
+            Vector3 spawnPosition = hit.point + hit.normal * 0.001f; // 减小偏移量
+
+            // 计算一个保持贴花水平的旋转
+            Vector3 forward = Vector3.ProjectOnPlane(transform.forward, Vector3.up).normalized;
+            if (forward == Vector3.zero)
+            {
+                forward = -Vector3.ProjectOnPlane(hit.normal, Vector3.up).normalized;
+            }
+            Quaternion horizontalRotation = Quaternion.LookRotation(forward, Vector3.up);
+
+            // 应用90度的X轴旋转来匹配预制体的初始旋转
+            Quaternion finalRotation = horizontalRotation * Quaternion.Euler(90, 0, 0);
+
+            trailManager.SpawnDecal(spawnPosition, currentDungSize * 0.5f, finalRotation);
         }
     }
 
@@ -118,6 +154,19 @@ public class DungBeetle : MonoBehaviour
             float rotationAmount = (movement.magnitude / (currentDungSize * Mathf.PI)) * 360f;
             currentDungBall.transform.DORotate(rotationAxis * rotationAmount, Time.deltaTime, RotateMode.WorldAxisAdd)
                 .SetEase(Ease.Linear);
+        }
+    }
+
+    private void ShrinkDungBall()
+    {
+        float shrinkRate = 0.05f * Time.deltaTime; // 减小收缩速率
+        currentDungSize = Mathf.Max(0, currentDungSize - shrinkRate);
+        UpdateDungBallSize();
+        UpdateMoveSpeed();
+
+        if (currentDungSize <= 0.1f) // 当粪球变得非常��时才完全消失
+        {
+            DropDung();
         }
     }
 }
