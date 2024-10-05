@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 5238173631350803002}
   m_Layer: 0
   m_Name: DungTrail
-  m_TagString: Untagged
+  m_TagString: DungTrail
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
