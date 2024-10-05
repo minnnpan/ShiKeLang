@@ -62,6 +62,13 @@ public class DungBeetle : MonoBehaviour
             currentMoveSpeed = baseMoveSpeed;
 
             OnDungDrop?.Invoke(droppedSize);
+
+            // 通知 GameManager 玩家已经丢弃了粪球
+            GameManager gameManager = FindObjectOfType<GameManager>();
+            if (gameManager != null)
+            {
+                gameManager.OnPlayerDroppedDung();
+            }
         }
     }
 
@@ -164,7 +171,7 @@ public class DungBeetle : MonoBehaviour
         UpdateDungBallSize();
         UpdateMoveSpeed();
 
-        if (currentDungSize <= 0.1f) // 当粪球变得非常��时才完全消失
+        if (currentDungSize <= 0.1f) // 当粪球变得非常时才完全消失
         {
             DropDung();
         }

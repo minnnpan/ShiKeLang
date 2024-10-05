@@ -68,4 +68,9 @@ public class DungCoverageCalculator : MonoBehaviour
             coverageText.text = $"Dung Coverage: {coverage:P2}";
         }
     }
+
+    public float GetCurrentCoverage()
+    {
+        return CalculateCoverage();
+    }
 }
