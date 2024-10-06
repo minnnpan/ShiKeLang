@@ -15,7 +15,6 @@ public class UIManager : MonoBehaviour
     private void Start()
     {
         gameManager = GameManager.Instance;
-        ShowStartWindow();
     }
 
     public void ShowStartWindow()

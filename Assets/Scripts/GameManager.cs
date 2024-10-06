@@ -50,6 +50,7 @@ public class GameManager : MonoBehaviour
         
         gameStarted = true;
         InitializeGame();
+        EnablePlayerMovement();  // 添加这一行
     }
 
     private void InitializeGame()
@@ -83,7 +84,7 @@ public class GameManager : MonoBehaviour
         // }
         // else
         // {
-        //     Debug.LogWarning("未找到 TopDownCamera 或 player 为空");
+        //     Debug.LogWarning("未找�� TopDownCamera 或 player 为空");
         // }
 
         if (stampede != null)
@@ -95,9 +96,26 @@ public class GameManager : MonoBehaviour
         hasDroppedDung = false;
     }
 
+    private void EnablePlayerMovement()
+    {
+        if (player != null)
+        {
+            DungBallMovementController movementController = player.GetComponent<DungBallMovementController>();
+            if (movementController != null)
+            {
+                movementController.enabled = true;
+            }
+        }
+    }
+
     private void Update()
     {
-        if (!gameEnded && !isPaused && coverageCalculator != null && gameStarted == true)
+        if (!gameStarted)
+        {
+            return;  // 如果游戏还没开始，直接返回
+        }
+
+        if (!gameEnded && !isPaused && coverageCalculator != null)
         {
             float coverage = coverageCalculator.GetCurrentCoverage();
             uiManager.UpdateCoverageText(coverage);
