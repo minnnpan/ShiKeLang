@@ -15,6 +15,8 @@ GameObject:
   - component: {fileID: 3543377352599084105}
   - component: {fileID: 174810153858566812}
   - component: {fileID: -7630552818466785761}
+  - component: {fileID: 1789493897882845039}
+  - component: {fileID: 6334054845254955261}
   m_Layer: 0
   m_Name: DungBall
   m_TagString: Player
@@ -124,6 +126,9 @@ MonoBehaviour:
     type: 3}
   smoothTime: 0.1
   trailManager: {fileID: 0}
+  beetleGroundOffset: 0.1
+  minDistanceToBall: 0.5
+  maxDistanceToBall: 1.5
 --- !u!54 &174810153858566812
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -165,13 +170,77 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveForce: 10
   maxSpeed: 5
-  brakingForce: 5
-  angularDragGround: 0.5
-  angularDragAir: 0.1
+  airControlFactor: 0.5
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
   groundCheckRadius: 0.2
-  minSize: 0.5
+  minSize: 0.05
   maxSize: 3
   shrinkRate: 0.1
+--- !u!114 &1789493897882845039
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4389424521977489072}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 38a2b0d439ad2294f9c2fd497f3433fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  collisionLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  pressureMultiplier: 1
+  raycastDistance: 0.43
+  drawingInterval: 0.01
+  positionThreshold: 0.01
+  connector:
+    hitSpacing: 0
+    hitLimit: 30
+    connectHits: 0
+    clipConnected: 0
+--- !u!114 &6334054845254955261
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4389424521977489072}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 397bd25e781ee4d91b51dcb952aa46e3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  layers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  group:
+    index: 0
+  targetModel: {fileID: 0}
+  targetTexture: {fileID: 0}
+  blendMode:
+    Index: 0
+    Color: {r: 1, g: 1, b: 1, a: 1}
+    Texture: {fileID: 0}
+    Kernel: 1
+    Channels: {x: 1, y: 1, z: 1, w: 1}
+  color: {r: 0.42361903, g: 0.6792453, b: 0.36845854, a: 1}
+  opacity: 1
+  angle: 0
+  scale: {x: 1, y: 1, z: 1}
+  radius: 0.1
+  hardness: 5
+  tileTexture: {fileID: 2800000, guid: d79258f000b71ab4f8b4f5940f95cefd, type: 3}
+  tileTransform: {fileID: 0}
+  tileOpacity: 1
+  tileTransition: 4
+  findMask: 1
+  findDepthMask: 1
+  modifiers:
+    modifiers: []
+  references:
+    version: 2
+    RefIds: []

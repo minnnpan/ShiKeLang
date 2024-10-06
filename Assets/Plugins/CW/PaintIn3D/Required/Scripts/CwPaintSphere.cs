@@ -111,7 +111,7 @@ namespace PaintIn3D
 		}
 
 		/// <summary>This method paints all pixels at the specified point using the shape of a sphere.</summary>
-		public void HandleHitPoint(bool preview, int priority, float pressure, int seed, Vector3 position, Quaternion rotation)
+		public virtual void HandleHitPoint(bool preview, int priority, float pressure, int seed, Vector3 position, Quaternion rotation)
 		{
 			if (modifiers != null && modifiers.Count > 0)
 			{
