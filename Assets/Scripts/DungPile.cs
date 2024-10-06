@@ -14,11 +14,11 @@ public class DungPile : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            DungBeetle dungBeetle = other.GetComponent<DungBeetle>();
-            if (dungBeetle != null)
+            DungBallController dungBallController = other.GetComponent<DungBallController>();
+            if (dungBallController != null)
             {
                 Debug.Log("拾取大便");
-                dungBeetle.PickUpDung(this);
+                dungBallController.PickUpDung(this);
                 if (spawner != null)
                 {
                     spawner.RemoveDungPile(gameObject);
@@ -27,7 +27,7 @@ public class DungPile : MonoBehaviour
             }
             else
             {
-                Debug.Log("dungBeetle is null");
+                Debug.Log("dungBallController is null");
             }
         }
     }
