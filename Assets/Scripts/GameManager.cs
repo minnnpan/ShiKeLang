@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    public static GameManager Instance { get; private set; }
+
     public DungBallController dungBallPrefab;
     public Transform spawnPoint;
     public DungBallController player;
@@ -16,7 +18,20 @@ public class GameManager : MonoBehaviour
     private bool hasDroppedDung = false;
 
     public TopDownCamera topDownCamera;
+    public Stampede stampede;
     
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+
     private void Start()
     {
         InitializeGame();
@@ -60,6 +75,11 @@ public class GameManager : MonoBehaviour
             Debug.LogWarning("未找到 TopDownCamera 或 player 为空");
         }   
 
+        if (stampede != null)
+        {
+            stampede.OnEnable();
+        }
+
         gameEnded = false;
         hasDroppedDung = false;
     }
@@ -96,14 +116,20 @@ public class GameManager : MonoBehaviour
         hasDroppedDung = true;
     }
 
-    private void EndGame(bool isWin)
+    public void EndGame(bool isWin)
     {
+        if (gameEnded) return;
+
         gameEnded = true;
         if (gameResultText != null)
         {
             gameResultText.gameObject.SetActive(true);
             gameResultText.text = isWin ? "You Win！" : "Game Over！";
             gameResultText.color = isWin ? Color.green : Color.red;
+        }
+        if (stampede != null)
+        {
+            stampede.OnDisable();
         }
     }
 
