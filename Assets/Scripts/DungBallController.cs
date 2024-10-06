@@ -1,6 +1,7 @@
 using UnityEngine;
 using System;
 using DG.Tweening;
+using PaintIn3D;
 
 public class DungBallController : MonoBehaviour
 {
@@ -16,6 +17,7 @@ public class DungBallController : MonoBehaviour
     private Vector3 beetleVelocity;
     private DungBallMovementController movementController;
     private Rigidbody beetleRigidbody;
+    private CwPaintSphere paintSphere;
 
     public bool HasDung => currentDungSize > 0.1f;
 
@@ -25,6 +27,7 @@ public class DungBallController : MonoBehaviour
     private void Awake()
     {
         movementController = GetComponent<DungBallMovementController>();
+        paintSphere = GetComponent<CwPaintSphere>();
     }
 
     private void Start()
@@ -33,6 +36,10 @@ public class DungBallController : MonoBehaviour
         InitializeBeetle();
         UpdateDungBallSize();
         movementController.OnSizeChanged += HandleSizeChanged;
+        if (paintSphere == null)
+        {
+            Debug.LogWarning("CwPaintSphere component not found on DungBall!");
+        }
     }
 
     private void InitializeBeetle()
@@ -109,6 +116,10 @@ public class DungBallController : MonoBehaviour
     private void UpdateDungBallSize()
     {
         transform.localScale = Vector3.one * currentDungSize;
+        if (paintSphere != null)
+        {
+            paintSphere.Radius = currentDungSize * 0.5f; // 你可以调整这个乘数来获得合适的效果
+        }
     }
 
     private void DropDung()
