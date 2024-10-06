@@ -5,9 +5,13 @@ using TMPro;
 public class TextureCoverageAnalyzer : MonoBehaviour
 {
     public CwChannelCounter channelCounter;
-    public TextMeshProUGUI displayText;
 
     void Update()
+    {
+        // CalculateCoverage();
+    }
+
+    private float CalculateCoverage()
     {
         if (channelCounter != null && channelCounter.HasRead)
         {
@@ -19,12 +23,22 @@ public class TextureCoverageAnalyzer : MonoBehaviour
             float averageCoveredPixels = (coveredPixelsR + coveredPixelsG + coveredPixelsB) / 3f;
             float coverageRatio = averageCoveredPixels / totalPixels;
             
-            float displayValue = (1 - coverageRatio) * 2 * 100;
+            float displayValue = (1 - coverageRatio) * 2;
             
-            if (displayText != null)
-            {
-                displayText.text = $"Coverage: {displayValue:F1}%";
-            }
+            return displayValue;
         }
+
+        return -1f;
+    }
+    
+    public float GetCurrentCoverage()
+    {
+        return CalculateCoverage();
+    }
+
+    public void ResetCoverage()
+    {
+        GameManager.Instance.ResetGroundTexture();
+        CalculateCoverage();
     }
 }

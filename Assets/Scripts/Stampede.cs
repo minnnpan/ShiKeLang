@@ -93,4 +93,13 @@ public class Stampede : MonoBehaviour, StampedeState
         stampedeMaxFoots = Mathf.Min(stampedeMaxFoots + 1, 10);
         spawnAreaSize *= 1.1f;
     }
+
+    public void Reset()
+    {
+        OnDisable();
+        stampedeInterval = 3;
+        stampedeMaxFoots = 3;
+        spawnAreaSize = new Vector2(10f, 10f);
+        elapsedTime = 0f;
+    }
 }

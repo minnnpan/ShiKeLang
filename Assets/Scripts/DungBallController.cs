@@ -109,4 +109,8 @@ public class DungBallController : MonoBehaviour
     {
         movementController.IncreaseSize(dungPile.dungSize);
     }
+
+    private void OnDestroy() {
+        Destroy(beetle);
+    }
 }

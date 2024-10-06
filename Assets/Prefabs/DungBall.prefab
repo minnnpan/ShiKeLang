@@ -12,9 +12,14 @@ GameObject:
   - component: {fileID: 8528065685104152595}
   - component: {fileID: 3710640329643904801}
   - component: {fileID: 7637012243961024328}
+  - component: {fileID: 5527061871705083248}
+  - component: {fileID: 3561612112938499613}
+  - component: {fileID: -714237494502647382}
+  - component: {fileID: -2432767282504743699}
+  - component: {fileID: -6942374359652778962}
   m_Layer: 0
   m_Name: DungBall
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -105,3 +110,136 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &5527061871705083248
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4389424521977489072}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bde1e9127bdb64a60b88094b677019b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  beetlePrefab: {fileID: 6173897812512457920, guid: d27ed11bd259a4fa8bb7f754606be071,
+    type: 3}
+  smoothTime: 0.1
+  beetleGroundOffset: 0.1
+  minDistanceToBall: 0.5
+  maxDistanceToBall: 1.5
+--- !u!54 &3561612112938499613
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4389424521977489072}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!114 &-714237494502647382
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4389424521977489072}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 744e1fb8dda794a57a6b600cecd94b87, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveForce: 20
+  maxSpeed: 10
+  airControlFactor: 0.5
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  groundCheckRadius: 0.2
+  minSize: 0.05
+  maxSize: 3
+  shrinkRate: 0.1
+--- !u!114 &-2432767282504743699
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4389424521977489072}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 38a2b0d439ad2294f9c2fd497f3433fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  collisionLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  pressureMultiplier: 1
+  raycastDistance: 0.43
+  drawingInterval: 0.01
+  positionThreshold: 0.01
+  connector:
+    hitSpacing: 0
+    hitLimit: 30
+    connectHits: 0
+    clipConnected: 0
+--- !u!114 &-6942374359652778962
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4389424521977489072}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b60dba26322c49718238a60c1865f771, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  layers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  group:
+    index: 0
+  targetModel: {fileID: 0}
+  targetTexture: {fileID: 0}
+  blendMode:
+    Index: 0
+    Color: {r: 1, g: 1, b: 1, a: 1}
+    Texture: {fileID: 0}
+    Kernel: 1
+    Channels: {x: 1, y: 1, z: 1, w: 1}
+  color: {r: 1, g: 1, b: 1, a: 1}
+  opacity: 1
+  angle: 0
+  scale: {x: 1, y: 1, z: 1}
+  radius: 0.1
+  hardness: 5
+  tileTexture: {fileID: 2800000, guid: 5198ec4c234698442a07d124b02e156d, type: 3}
+  tileTransform: {fileID: 343497362895749981}
+  tileOpacity: 1
+  tileTransition: 4
+  findMask: 1
+  findDepthMask: 1
+  modifiers:
+    modifiers: []
+  references:
+    version: 2
+    RefIds: []
