@@ -42,52 +42,55 @@ public class Stampede : MonoBehaviour, StampedeState
     //踩踏实体生成时高度
     public float stampedeHeight = 10;
     
-    void Start()
-    {
-        
-    }
-    
-    void Update()
-    {
-        
-    }
+        private float elapsedTime = 0f;
+    private float difficultyIncreaseInterval = 30f;
     //每隔一段时间随机踩踏
     System.Collections.IEnumerator SpawnStampede()
     {
         while (StampedeState)
         {
             //生成随机数量
-            int objectCount = Random.Range(1, stampedeMaxFoots);
+            int objectCount = Random.Range(1, stampedeMaxFoots + 1);
 
             for (int i = 0; i < objectCount; i++)
             {
-                // 随机生成位置
-                float random_x = Random.Range(-spawnAreaSize.x / 2, spawnAreaSize.x / 2);
-                float random_z = Random.Range(-spawnAreaSize.y / 2, spawnAreaSize.y / 2);
-            
-                Vector3 spawnPosition = new Vector3(
-                    random_x,
-                    0, // 假设地面在y=0
-                    random_z
-                );
-
-                //实例化 示意物体
-                GameObject go = Instantiate(stampedeCircle, spawnPosition, Quaternion.identity);
-                Destroy(go, stampedeTime);
-                //实例化 下落物体
-                Vector3 spawnPosition2 = new Vector3(
-                    random_x,
-                    stampedeHeight, // 假设地面在y=0
-                    random_z
-                );
-                GameObject go2 = Instantiate(stampedeFoot, spawnPosition2, Quaternion.identity);
-                go2.transform.DOMoveY(0, stampedeTime).SetEase(Ease.Linear)
-                    .OnComplete(() => Destroy(go2));
+                SpawnFoot();
             }
 
             // 等待指定的时间间隔
             yield return new WaitForSeconds(stampedeInterval);
+
+            elapsedTime += stampedeInterval;
+            if (elapsedTime >= difficultyIncreaseInterval)
+            {
+                IncreaseDifficulty();
+                elapsedTime = 0f;
+            }
         }
     }
-    
+
+    private void SpawnFoot()
+    {
+        float random_x = Random.Range(-spawnAreaSize.x / 2, spawnAreaSize.x / 2);
+        float random_z = Random.Range(-spawnAreaSize.y / 2, spawnAreaSize.y / 2);
+        
+        Vector3 spawnPosition = new Vector3(random_x, 0, random_z);
+
+        //实例化 示意物体
+        GameObject go = Instantiate(stampedeCircle, spawnPosition, Quaternion.identity);
+        Destroy(go, stampedeTime);
+
+        //实例化 下落物体
+        Vector3 spawnPosition2 = new Vector3(random_x, stampedeHeight, random_z);
+        GameObject go2 = Instantiate(stampedeFoot, spawnPosition2, Quaternion.identity);
+        go2.transform.DOMoveY(0, stampedeTime).SetEase(Ease.Linear)
+            .OnComplete(() => Destroy(go2));
+    }
+
+    private void IncreaseDifficulty()
+    {
+        stampedeInterval = Mathf.Max(stampedeInterval * 0.9f, 0.5f);
+        stampedeMaxFoots = Mathf.Min(stampedeMaxFoots + 1, 10);
+        spawnAreaSize *= 1.1f;
+    }
 }
