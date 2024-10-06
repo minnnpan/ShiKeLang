@@ -13,13 +13,9 @@ GameObject:
   - component: {fileID: 8821123461269071883}
   - component: {fileID: 5892807991752579746}
   - component: {fileID: 635369929974359668}
-  - component: {fileID: 2541230159999249664}
-  - component: {fileID: 3414393653989724908}
-  - component: {fileID: 3586340676308048489}
-  - component: {fileID: 4276242171145946796}
   m_Layer: 0
-  m_Name: Player
-  m_TagString: Player
+  m_Name: BeetlePrefab
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -118,8 +114,8 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6173897812512457920}
   serializedVersion: 4
-  m_Mass: 1
-  m_Drag: 0.05
+  m_Mass: 0.3
+  m_Drag: 0
   m_AngularDrag: 0
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
@@ -137,113 +133,3 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
---- !u!114 &2541230159999249664
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6173897812512457920}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bde1e9127bdb64a60b88094b677019b0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  baseMoveSpeed: 5
-  dungBallOffset: 1
-  dungBallPrefab: {fileID: 0}
-  smoothTime: 0.1
-  trailManager: {fileID: 0}
-  decalSpawnInterval: 0.5
---- !u!95 &3414393653989724908
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6173897812512457920}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
---- !u!143 &3586340676308048489
-CharacterController:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6173897812512457920}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Height: 1
-  m_Radius: 0.5
-  m_SlopeLimit: 45
-  m_StepOffset: 0.3
-  m_SkinWidth: 0.08
-  m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &4276242171145946796
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6173897812512457920}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6d85e75428ba8bb47a38506249940dea, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _anim: {fileID: 0}
-  _characterController: {fileID: 0}
-  playerCamera: {fileID: 0}
-  cameraEnabled: 1
-  initCameraOnSpawn: 1
-  cameraName: Main Camera
-  cameraPositionOffset: {x: 0, y: 10, z: 0}
-  cameraRotationOffset: {x: 45, y: 0, z: 0}
-  cameraDampTime: 0.1
-  offsetDampTime: 0.25
-  maxOffset: 0.3
-  isDraggable: 1
-  minCameraHeight: 3
-  maxCameraHeight: 15
-  minCameraVertical: 0.5
-  maxCameraVertical: 0.5
-  cameraZoomSpeed: 15
-  cameraZoomPower: 5
-  movementEnabled: 1
-  jumpHeight: 4
-  gravity: 10
-  moveSpeed: 5
-  moveUpKey: 119
-  moveDownKey: 115
-  moveLeftKey: 97
-  moveRightKey: 100
-  jumpKey: 32
-  movementInputType: 0
-  bodyWeightIK: 0.5
-  headWeightIK: 1
-  dampSmoothTimeIK: 0.4
-  dampSmoothTimeRotation: 0.25
-  animatorSmoothTime: 0.15

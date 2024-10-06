@@ -3,25 +3,66 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    public DungBeetle player;
+    public DungBallController dungBallPrefab;
+    public Transform spawnPoint;
+    public DungBallController player;
     public DungCoverageCalculator coverageCalculator;
     public TextMeshProUGUI gameResultText;
     
     [SerializeField] private float winPercentage = 0.8f;
+    [SerializeField] private float initialDungSize = 1f;
     private bool gameEnded = false;
     private bool hasDroppedDung = false;
 
+    public TopDownCamera topDownCamera;
+
     private void Start()
     {
-        if (player != null)
+        InitializeGame();
+    }
+
+    private void InitializeGame()
+    {
+        if (spawnPoint == null)
         {
+            spawnPoint = new GameObject("SpawnPoint").transform;
+            spawnPoint.position = new Vector3(0, 3, 0); // 默认在地面中心
+        }
+
+        if (dungBallPrefab != null)
+        {
+            player = Instantiate(dungBallPrefab, spawnPoint.position, Quaternion.identity);
             player.OnDungPickup += HandleDungPickup;
             player.OnDungDrop += HandleDungDrop;
+
+            // 初始化粪球大小
+            DungBallMovementController movementController = player.GetComponent<DungBallMovementController>();
+            if (movementController != null)
+            {
+                movementController.InitializeSize(initialDungSize);
+            }
         }
+        else
+        {
+            Debug.LogError("DungBall预制体未设置！");
+        }
+
         if (gameResultText != null)
         {
             gameResultText.gameObject.SetActive(false);
         }
+
+        if (topDownCamera != null && player != null)
+        {
+            topDownCamera.SetTarget(player.transform);
+        }
+        else
+        {
+            Debug.LogWarning("未找到 TopDownCamera 或 player 为空");
+        }   
+
+        gameEnded = false;
+        hasDroppedDung = false;
     }
 
     private void Update()
@@ -68,12 +109,11 @@ public class GameManager : MonoBehaviour
 
     public void RestartGame()
     {
-        gameEnded = false;
-        if (gameResultText != null)
+        if (player != null)
         {
-            gameResultText.gameObject.SetActive(false);
+            Destroy(player.gameObject);
         }
-        // 在这里添加重置游戏状态的其他逻辑
+        InitializeGame();
     }
 
     private void HandleDungPickup(float size)
