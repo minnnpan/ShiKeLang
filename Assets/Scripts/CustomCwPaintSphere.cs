@@ -4,16 +4,17 @@ using PaintIn3D;
 
 public class CustomCwPaintSphere : CwPaintSphere
 {
-    private DungBallController dungBallController;
+    private bool isPaintingAllowed = false;
 
-    private void Start()
+    public void SetPaintingAllowed(bool allowed)
     {
-        dungBallController = GetComponent<DungBallController>();
+        isPaintingAllowed = allowed;
+        enabled = allowed;
     }
 
     public override void HandleHitPoint(bool preview, int priority, float pressure, int seed, Vector3 position, Quaternion rotation)
     {
-        if (dungBallController != null && dungBallController.IsPaintingAllowed)
+        if (isPaintingAllowed)
         {
             base.HandleHitPoint(preview, priority, pressure, seed, position, rotation);
         }

@@ -7,44 +7,31 @@ public class DungBallController : MonoBehaviour
 {
     [SerializeField] private GameObject beetlePrefab;
     [SerializeField] private float smoothTime = 0.1f;
-    [SerializeField] private DungTrailManager trailManager;
     [SerializeField] private float beetleGroundOffset = 0.1f;
     [SerializeField] private float minDistanceToBall = 0.5f;
     [SerializeField] private float maxDistanceToBall = 1.5f;
 
-    private float currentDungSize = 1f;
     private GameObject beetle;
     private Vector3 beetleVelocity;
     private DungBallMovementController movementController;
     private Rigidbody beetleRigidbody;
-    private CwPaintSphere paintSphere;
-
-    private bool isPaintingAllowed = false;
-
-    public bool HasDung => currentDungSize > 0.1f;
-
-    public event Action<float> OnDungPickup;
-    public event Action<float> OnDungDrop;
-
-    public bool IsPaintingAllowed => isPaintingAllowed;
+    private CustomCwPaintSphere paintSphere;
 
     private void Awake()
     {
         movementController = GetComponent<DungBallMovementController>();
-        paintSphere = GetComponent<CwPaintSphere>();
+        paintSphere = GetComponent<CustomCwPaintSphere>();
     }
 
     private void Start()
     {
         DOTween.SetTweensCapacity(500, 50);
         InitializeBeetle();
-        UpdateDungBallSize();
         movementController.OnSizeChanged += HandleSizeChanged;
         if (paintSphere == null)
         {
-            Debug.LogWarning("CwPaintSphere component not found on DungBall!");
+            Debug.LogWarning("CustomCwPaintSphere component not found on DungBall!");
         }
-        ControlPainting(false);
     }
 
     private void InitializeBeetle()
@@ -64,29 +51,17 @@ public class DungBallController : MonoBehaviour
     private void Update()
     {
         UpdateBeetlePosition();
-
-        if (HasDung)
-        {
-            if (Input.GetKey(KeyCode.Space))
-            {
-                ControlPainting(true);
-                ConsumeDungWhilePainting();
-            }
-            else
-            {
-                ControlPainting(false);
-            }
-        }
-        else
-        {
-            ControlPainting(false);
-        }
+        HandlePainting();
     }
 
-    private void ConsumeDungWhilePainting()
+    private void HandlePainting()
     {
-        float consumptionRate = 0.1f * Time.deltaTime; // 调整这个值以控制消耗速度
-        movementController.ConsumeDung(consumptionRate);
+        bool shouldPaint = movementController.HasDung && Input.GetKey(KeyCode.Space);
+        paintSphere.SetPaintingAllowed(shouldPaint);
+        if (shouldPaint)
+        {
+            movementController.ConsumeDung(0.1f * Time.deltaTime);
+        }
     }
 
     private void UpdateBeetlePosition()
@@ -96,9 +71,8 @@ public class DungBallController : MonoBehaviour
             Vector3 directionToBeetle = (beetle.transform.position - transform.position);
             float distanceToBall = directionToBeetle.magnitude;
 
-            // 根据粪球大小调整最小和最大距离
-            float adjustedMinDistance = minDistanceToBall + currentDungSize * 0.5f;
-            float adjustedMaxDistance = maxDistanceToBall + currentDungSize * 0.5f;
+            float adjustedMinDistance = minDistanceToBall + movementController.CurrentSize * 0.5f;
+            float adjustedMaxDistance = maxDistanceToBall + movementController.CurrentSize * 0.5f;
 
             Vector3 targetPosition;
             if (distanceToBall > adjustedMaxDistance)
@@ -111,14 +85,12 @@ public class DungBallController : MonoBehaviour
             }
             else
             {
-                return; // 如果在合适的范围内，不需要调整位置
+                return;
             }
 
-            // 只更新 x 和 z 坐标，让 y 坐标由物理系统处理
             Vector3 newPosition = Vector3.Lerp(beetle.transform.position, targetPosition, Time.deltaTime / smoothTime);
             beetle.transform.position = new Vector3(newPosition.x, beetle.transform.position.y, newPosition.z);
 
-            // 使屎壳郎面向粪球
             Vector3 lookDirection = transform.position - beetle.transform.position;
             lookDirection.y = 0;
             beetle.transform.rotation = Quaternion.LookRotation(lookDirection);
@@ -127,47 +99,14 @@ public class DungBallController : MonoBehaviour
 
     private void HandleSizeChanged(float newSize)
     {
-        currentDungSize = newSize;
-        UpdateDungBallSize();
-
-        if (currentDungSize <= 0.1f)
-        {
-            DropDung();
-        }
-        else
-        {
-            Debug.Log($"current ball size: {currentDungSize}");
-        }
-    }
-
-    private void UpdateDungBallSize()
-    {
-        transform.localScale = Vector3.one * currentDungSize;
         if (paintSphere != null)
         {
-            paintSphere.Radius = currentDungSize * 0.5f; // 你可以调整这个乘数来获得合适的效果
+            paintSphere.Radius = newSize * 0.5f;
         }
-    }
-
-    private void DropDung()
-    {
-        OnDungDrop?.Invoke(currentDungSize);
-        currentDungSize = 0;
-        UpdateDungBallSize();
     }
 
     public void PickUpDung(DungPile dungPile)
     {
         movementController.IncreaseSize(dungPile.dungSize);
-        OnDungPickup?.Invoke(dungPile.dungSize);
-    }
-
-    private void ControlPainting(bool enable)
-    {
-        isPaintingAllowed = enable;
-        if (paintSphere != null)
-        {
-            paintSphere.enabled = enable;
-        }
     }
 }

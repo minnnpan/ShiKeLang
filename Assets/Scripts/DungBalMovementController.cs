@@ -24,6 +24,11 @@ public class DungBallMovementController : MonoBehaviour
     private Vector3 moveDirection;
 
     public event Action<float> OnSizeChanged;
+    public event Action<float> OnDungPickup;
+    public event Action<float> OnDungDrop;
+
+    public float CurrentSize => currentSize;
+    public bool HasDung => currentSize > 0.1f;
 
     private void Awake()
     {
@@ -84,6 +89,10 @@ public class DungBallMovementController : MonoBehaviour
         {
             currentSize = Mathf.Max(minSize, currentSize - amount);
             UpdateSize();
+            if (currentSize <= 0.1f)
+            {
+                OnDungDrop?.Invoke(currentSize);
+            }
         }
     }
 
@@ -96,8 +105,10 @@ public class DungBallMovementController : MonoBehaviour
 
     public void IncreaseSize(float amount)
     {
+        float previousSize = currentSize;
         currentSize = Mathf.Min(maxSize, currentSize + amount);
         UpdateSize();
+        OnDungPickup?.Invoke(currentSize - previousSize);
     }
 
     public void InitializeSize(float size)
