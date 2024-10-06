@@ -1,4 +1,3 @@
-using System;
 using TMPro;
 using UnityEngine;
 
@@ -16,7 +15,7 @@ public class GameManager : MonoBehaviour
     private bool hasDroppedDung = false;
 
     public TopDownCamera topDownCamera;
-    
+
     private void Start()
     {
         InitializeGame();
@@ -27,18 +26,20 @@ public class GameManager : MonoBehaviour
         if (spawnPoint == null)
         {
             spawnPoint = new GameObject("SpawnPoint").transform;
-            spawnPoint.position = new Vector3(0, 3, 0);
+            spawnPoint.position = new Vector3(0, 3, 0); // 默认在地面中心
         }
 
         if (dungBallPrefab != null)
         {
             player = Instantiate(dungBallPrefab, spawnPoint.position, Quaternion.identity);
+            player.OnDungPickup += HandleDungPickup;
+            player.OnDungDrop += HandleDungDrop;
+
+            // 初始化粪球大小
             DungBallMovementController movementController = player.GetComponent<DungBallMovementController>();
             if (movementController != null)
             {
                 movementController.InitializeSize(initialDungSize);
-                movementController.OnDungPickup += HandleDungPickup;
-                movementController.OnDungDrop += HandleDungDrop;
             }
         }
         else
@@ -84,8 +85,7 @@ public class GameManager : MonoBehaviour
 
     private void CheckLoseCondition(float coverage)
     {
-        DungBallMovementController movementController = player.GetComponent<DungBallMovementController>();
-        if (hasDroppedDung && coverage < winPercentage && !movementController.HasDung)
+        if (hasDroppedDung && coverage < winPercentage && !player.HasDung)
         {
             EndGame(false);
         }
@@ -119,24 +119,21 @@ public class GameManager : MonoBehaviour
     private void HandleDungPickup(float size)
     {
         Debug.Log($"玩家拾取了大小为 {size} 的大便！");
+        // 这里可以添加更多逻辑，比如更新UI、计分等
     }
 
     private void HandleDungDrop(float size)
     {
         Debug.Log($"玩家丢弃了大小为 {size} 的大便！");
-        OnPlayerDroppedDung();
+        // 这里可以添加更多逻辑
     }
 
     private void OnDestroy()
     {
         if (player != null)
         {
-            DungBallMovementController movementController = player.GetComponent<DungBallMovementController>();
-            if (movementController != null)
-            {
-                movementController.OnDungPickup -= HandleDungPickup;
-                movementController.OnDungDrop -= HandleDungDrop;
-            }
+            player.OnDungPickup -= HandleDungPickup;
+            player.OnDungDrop -= HandleDungDrop;
         }
     }
 }
