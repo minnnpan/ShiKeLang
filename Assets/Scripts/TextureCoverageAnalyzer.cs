@@ -1,9 +1,11 @@
 using UnityEngine;
 using PaintCore;
+using TMPro;
 
 public class TextureCoverageAnalyzer : MonoBehaviour
 {
     public CwChannelCounter channelCounter;
+    public TextMeshProUGUI displayText;
 
     void Update()
     {
@@ -14,11 +16,15 @@ public class TextureCoverageAnalyzer : MonoBehaviour
             int coveredPixelsB = channelCounter.CountB;
             int totalPixels = channelCounter.Total;
 
-            // 计算RGB通道的平均覆盖像素数
             float averageCoveredPixels = (coveredPixelsR + coveredPixelsG + coveredPixelsB) / 3f;
-
             float coverageRatio = averageCoveredPixels / totalPixels;
-            Debug.Log($"Texture coverage: {coverageRatio * 100:F2}%");
+            
+            float displayValue = (1 - coverageRatio) * 2 * 100;
+            
+            if (displayText != null)
+            {
+                displayText.text = $"Coverage: {displayValue:F1}%";
+            }
         }
     }
 }

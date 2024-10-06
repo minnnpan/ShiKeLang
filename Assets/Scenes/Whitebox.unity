@@ -344,10 +344,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 403591224}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -194.50656, y: 163}
-  m_SizeDelta: {x: 460.9869, y: 50}
+  m_AnchorMin: {x: 0, y: 0.5}
+  m_AnchorMax: {x: 0, y: 0.5}
+  m_AnchoredPosition: {x: 179.04045, y: 163}
+  m_SizeDelta: {x: 358.0809, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &261045077
 MonoBehaviour:
@@ -491,6 +491,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   channelCounter: {fileID: 1319252771}
+  displayText: {fileID: 261045077}
 --- !u!1 &389611805
 GameObject:
   m_ObjectHideFlags: 0
@@ -771,7 +772,6 @@ Transform:
   m_Children:
   - {fileID: 1640610019}
   - {fileID: 416993199}
-  - {fileID: 551726193}
   - {fileID: 1455509576}
   - {fileID: 365279118}
   - {fileID: 1319252770}
@@ -840,53 +840,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 527161057}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &551726191
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 551726193}
-  - component: {fileID: 551726192}
-  m_Layer: 0
-  m_Name: DungCoverageCalculator
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &551726192
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 551726191}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 123aeb1b148d644fba7093fd17fd1557, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  coverageText: {fileID: 261045077}
-  raycastResolution: 100
-  raycastHeight: 10
---- !u!4 &551726193
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 551726191}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 467420890}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &559125469
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2143,11 +2096,11 @@ MonoBehaviour:
   async: 1
   readAtStart: 1
   downsampleSteps: 3
-  registeredPaintableTexture: {fileID: 0}
-  cooldown: -6.562527
+  registeredPaintableTexture: {fileID: 642538470}
+  cooldown: -41.92181
   maskMesh: {fileID: 0}
   maskSubmesh: 0
-  maskTexture: {fileID: 2800000, guid: b9cd2e06a1646ff468ffc15236a14b90, type: 3}
+  maskTexture: {fileID: 0}
   maskChannel: 3
   total: 0
   threshold: 0.5
@@ -2329,7 +2282,7 @@ MonoBehaviour:
     type: 3}
   spawnPoint: {fileID: 0}
   player: {fileID: 0}
-  coverageCalculator: {fileID: 551726192}
+  coverageCalculator: {fileID: 0}
   gameResultText: {fileID: 662521250}
   winPercentage: 0.8
   initialDungSize: 1

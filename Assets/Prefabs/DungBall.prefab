@@ -232,7 +232,7 @@ MonoBehaviour:
   scale: {x: 1, y: 1, z: 1}
   radius: 0.1
   hardness: 5
-  tileTexture: {fileID: 2800000, guid: b9cd2e06a1646ff468ffc15236a14b90, type: 3}
+  tileTexture: {fileID: 2800000, guid: d33140bdd587c9e49bdb5c8862f7d9a1, type: 3}
   tileTransform: {fileID: 343497362895749981}
   tileOpacity: 1
   tileTransition: 4
