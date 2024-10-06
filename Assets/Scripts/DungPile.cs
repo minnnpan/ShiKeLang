@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class DungPile : MonoBehaviour
 {
-    public float dungSize = 1f;
+    public float dungSize = 1.5f;
     private DungPileSpawner spawner;
 
     private void Start()

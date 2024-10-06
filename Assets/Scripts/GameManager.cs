@@ -8,7 +8,7 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance { get; private set; }
 
     public UIManager uiManager;
-    public DungBallController dungBallPrefab;
+    // public DungBallController dungBallPrefab;
     public Transform spawnPoint;
     public DungBallController player;
     public TextureCoverageAnalyzer coverageCalculator;
@@ -20,7 +20,7 @@ public class GameManager : MonoBehaviour
     private bool isPaused = false;
     private bool gameStarted = false;
 
-    public TopDownCamera topDownCamera;
+    // public TopDownCamera topDownCamera;
     public Stampede stampede;
     
     private void Awake()
@@ -59,32 +59,32 @@ public class GameManager : MonoBehaviour
             spawnPoint = new GameObject("SpawnPoint").transform;
             spawnPoint.position = new Vector3(0, 3, 0);
         }
+        //
+        // if (dungBallPrefab != null)
+        // {
+        //     player = Instantiate(dungBallPrefab, spawnPoint.position, Quaternion.identity);
+        //     DungBallMovementController movementController = player.GetComponent<DungBallMovementController>();
+        //     if (movementController != null)
+        //     {
+        //         movementController.enabled = true;
+        //         movementController.InitializeSize(initialDungSize);
+        //         movementController.OnDungPickup += HandleDungPickup;
+        //         movementController.OnDungDrop += HandleDungDrop;
+        //     }
+        // }
+        // else
+        // {
+        //     Debug.LogError("DungBall预制体未设置！");
+        // }
 
-        if (dungBallPrefab != null)
-        {
-            player = Instantiate(dungBallPrefab, spawnPoint.position, Quaternion.identity);
-            DungBallMovementController movementController = player.GetComponent<DungBallMovementController>();
-            if (movementController != null)
-            {
-                movementController.enabled = true;
-                movementController.InitializeSize(initialDungSize);
-                movementController.OnDungPickup += HandleDungPickup;
-                movementController.OnDungDrop += HandleDungDrop;
-            }
-        }
-        else
-        {
-            Debug.LogError("DungBall预制体未设置！");
-        }
-
-        if (topDownCamera != null && player != null)
-        {
-            topDownCamera.SetTarget(player.transform);
-        }
-        else
-        {
-            Debug.LogWarning("未找到 TopDownCamera 或 player 为空");
-        }
+        // if (topDownCamera != null && player != null)
+        // {
+        //     topDownCamera.SetTarget(player.transform);
+        // }
+        // else
+        // {
+        //     Debug.LogWarning("未找到 TopDownCamera 或 player 为空");
+        // }
 
         if (stampede != null)
         {

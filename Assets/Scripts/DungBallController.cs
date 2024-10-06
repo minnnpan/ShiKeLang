@@ -1,21 +1,18 @@
 using UnityEngine;
 using System;
-using DG.Tweening;
 using PaintIn3D;
 
 public class DungBallController : MonoBehaviour
 {
-    [SerializeField] private GameObject beetlePrefab;
-    [SerializeField] private float smoothTime = 0.1f;
-    [SerializeField] private float beetleGroundOffset = 0.1f;
-    [SerializeField] private float minDistanceToBall = 0.5f;
-    [SerializeField] private float maxDistanceToBall = 1.5f;
+    public GameObject shitball;
+    public GameObject beetle;
+    public float groundOffset = 0.1f; // 与地面的偏移量
+    public float beetleOffset = 0.1f; // 与甲虫模型的偏移量
 
-    private GameObject beetle;
-    private Vector3 beetleVelocity;
     private DungBallMovementController movementController;
-    private Rigidbody beetleRigidbody;
     private CustomCwPaintSphere paintSphere;
+    private float previousRadius;
+    private Renderer shitballRenderer;
 
     private void Awake()
     {
@@ -25,32 +22,17 @@ public class DungBallController : MonoBehaviour
 
     private void Start()
     {
-        DOTween.SetTweensCapacity(500, 50);
-        InitializeBeetle();
         movementController.OnSizeChanged += HandleSizeChanged;
         if (paintSphere == null)
         {
             Debug.LogWarning("CustomCwPaintSphere component not found on DungBall!");
         }
-    }
-
-    private void InitializeBeetle()
-    {
-        beetle = Instantiate(beetlePrefab, transform.position, Quaternion.identity);
-        beetleRigidbody = beetle.GetComponent<Rigidbody>();
-        if (beetleRigidbody == null)
-        {
-            beetleRigidbody = beetle.AddComponent<Rigidbody>();
-        }
-        beetleRigidbody.useGravity = true;
-        beetleRigidbody.drag = 0f;
-        beetleRigidbody.angularDrag = 0f;
-        beetleRigidbody.constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ;
+        shitballRenderer = shitball.GetComponentInChildren<Renderer>();
+        previousRadius = shitballRenderer.bounds.extents.y;
     }
 
     private void Update()
     {
-        UpdateBeetlePosition();
         HandlePainting();
     }
 
@@ -60,40 +42,7 @@ public class DungBallController : MonoBehaviour
         paintSphere.SetPaintingAllowed(shouldPaint);
         if (shouldPaint)
         {
-            movementController.ConsumeDung(0.1f * Time.deltaTime);
-        }
-    }
-
-    private void UpdateBeetlePosition()
-    {
-        if (beetle != null)
-        {
-            Vector3 directionToBeetle = (beetle.transform.position - transform.position);
-            float distanceToBall = directionToBeetle.magnitude;
-
-            float adjustedMinDistance = minDistanceToBall + movementController.CurrentSize * 0.5f;
-            float adjustedMaxDistance = maxDistanceToBall + movementController.CurrentSize * 0.5f;
-
-            Vector3 targetPosition;
-            if (distanceToBall > adjustedMaxDistance)
-            {
-                targetPosition = transform.position + directionToBeetle.normalized * adjustedMaxDistance;
-            }
-            else if (distanceToBall < adjustedMinDistance)
-            {
-                targetPosition = transform.position + directionToBeetle.normalized * adjustedMinDistance;
-            }
-            else
-            {
-                return;
-            }
-
-            Vector3 newPosition = Vector3.Lerp(beetle.transform.position, targetPosition, Time.deltaTime / smoothTime);
-            beetle.transform.position = new Vector3(newPosition.x, beetle.transform.position.y, newPosition.z);
-
-            Vector3 lookDirection = transform.position - beetle.transform.position;
-            lookDirection.y = 0;
-            beetle.transform.rotation = Quaternion.LookRotation(lookDirection);
+            movementController.ConsumeDung(Time.deltaTime);
         }
     }
 
@@ -110,7 +59,15 @@ public class DungBallController : MonoBehaviour
         movementController.IncreaseSize(dungPile.dungSize);
     }
 
-    private void OnDestroy() {
-        Destroy(beetle);
+    public void AdjustDungballPosition(float ratio)
+    {
+        if (shitball != null && beetle != null && shitballRenderer != null)
+        {
+            var newpos = new Vector3(0, shitball.transform.localPosition.y, shitball.transform.localPosition.z);
+            newpos.y *= ratio;
+            newpos.z *= ratio;
+
+            shitball.transform.localPosition = newpos;
+        }
     }
 }
