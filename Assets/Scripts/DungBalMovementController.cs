@@ -14,7 +14,7 @@ public class DungBallMovementController : MonoBehaviour
     [SerializeField] private float groundCheckRadius = 0.2f;
 
     [Header("Size")]
-    [SerializeField] private float minSize = 0.5f;
+    [SerializeField] private float minSize = 0.05f;
     [SerializeField] private float maxSize = 3f;
     [SerializeField] private float shrinkRate = 0.1f;
 
@@ -24,6 +24,11 @@ public class DungBallMovementController : MonoBehaviour
     private Vector3 moveDirection;
 
     public event Action<float> OnSizeChanged;
+    public event Action<float> OnDungPickup;
+    public event Action<float> OnDungDrop;
+
+    public float CurrentSize => currentSize;
+    public bool HasDung => currentSize > 0.1f;
 
     private void Awake()
     {
@@ -78,12 +83,16 @@ public class DungBallMovementController : MonoBehaviour
         }
     }
 
-    public void ShrinkDungBall()
+    public void ConsumeDung(float amount)
     {
         if (currentSize > minSize)
         {
-            currentSize = Mathf.Max(minSize, currentSize - shrinkRate * Time.fixedDeltaTime);
+            currentSize = Mathf.Max(minSize, currentSize - amount);
             UpdateSize();
+            if (currentSize <= 0.1f)
+            {
+                OnDungDrop?.Invoke(currentSize);
+            }
         }
     }
 
@@ -96,8 +105,10 @@ public class DungBallMovementController : MonoBehaviour
 
     public void IncreaseSize(float amount)
     {
+        float previousSize = currentSize;
         currentSize = Mathf.Min(maxSize, currentSize + amount);
         UpdateSize();
+        OnDungPickup?.Invoke(currentSize - previousSize);
     }
 
     public void InitializeSize(float size)
