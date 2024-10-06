@@ -19,10 +19,14 @@ public class DungBallController : MonoBehaviour
     private Rigidbody beetleRigidbody;
     private CwPaintSphere paintSphere;
 
+    private bool isPaintingAllowed = false;
+
     public bool HasDung => currentDungSize > 0.1f;
 
     public event Action<float> OnDungPickup;
     public event Action<float> OnDungDrop;
+
+    public bool IsPaintingAllowed => isPaintingAllowed;
 
     private void Awake()
     {
@@ -40,6 +44,7 @@ public class DungBallController : MonoBehaviour
         {
             Debug.LogWarning("CwPaintSphere component not found on DungBall!");
         }
+        ControlPainting(false);
     }
 
     private void InitializeBeetle()
@@ -60,10 +65,28 @@ public class DungBallController : MonoBehaviour
     {
         UpdateBeetlePosition();
 
-        if (HasDung && Input.GetKey(KeyCode.Space))
+        if (HasDung)
         {
-            movementController.ShrinkDungBall();
+            if (Input.GetKey(KeyCode.Space))
+            {
+                ControlPainting(true);
+                ConsumeDungWhilePainting();
+            }
+            else
+            {
+                ControlPainting(false);
+            }
         }
+        else
+        {
+            ControlPainting(false);
+        }
+    }
+
+    private void ConsumeDungWhilePainting()
+    {
+        float consumptionRate = 0.1f * Time.deltaTime; // 调整这个值以控制消耗速度
+        movementController.ConsumeDung(consumptionRate);
     }
 
     private void UpdateBeetlePosition()
@@ -111,6 +134,10 @@ public class DungBallController : MonoBehaviour
         {
             DropDung();
         }
+        else
+        {
+            Debug.Log($"current ball size: {currentDungSize}");
+        }
     }
 
     private void UpdateDungBallSize()
@@ -133,5 +160,14 @@ public class DungBallController : MonoBehaviour
     {
         movementController.IncreaseSize(dungPile.dungSize);
         OnDungPickup?.Invoke(dungPile.dungSize);
+    }
+
+    private void ControlPainting(bool enable)
+    {
+        isPaintingAllowed = enable;
+        if (paintSphere != null)
+        {
+            paintSphere.enabled = enable;
+        }
     }
 }

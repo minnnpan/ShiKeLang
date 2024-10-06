@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 
@@ -15,7 +16,7 @@ public class GameManager : MonoBehaviour
     private bool hasDroppedDung = false;
 
     public TopDownCamera topDownCamera;
-
+    
     private void Start()
     {
         InitializeGame();
