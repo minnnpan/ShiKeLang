@@ -1,38 +1,40 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class BarControl : MonoBehaviour
 {
-    public float ProgressValue, PoopValue;
     public Image ProgressFill, PoopFill;
     public Animator ProgressBarAnim;
     private int ProgressLv;
-    // Start is called before the first frame update
-    void Start()
+    
+    private float maxDungSize = 3f; // the max dung size is 3
+    private float minDungSize = 0.5f; // the max dung size is 3
+    private float winPercentage = 0.8f;
+
+    private void Start()
     {
         ProgressLv = 0;
     }
 
-    // Update is called once per frame
-    void Update()
+    public void UpdateBars(float currentDungSize, float currentCoverage)
     {
-        float ProgressValueReal = ProgressValue * .8f;
-        ProgressFill.fillAmount = ProgressValueReal;
-        PoopFill.fillAmount = PoopValue;
+        // Update PoopFill (dung size)
+        PoopFill.fillAmount = (currentDungSize - minDungSize) / (maxDungSize - minDungSize);
 
-        if (ProgressValue >= .3f && ProgressLv == 0)
+        // Update ProgressFill (coverage)
+        float progressValue = currentCoverage / winPercentage;
+        ProgressFill.fillAmount = Mathf.Clamp01(progressValue);
+
+        // Update ProgressBar animation
+        if (progressValue >= 0.3f && ProgressLv == 0)
         {
             ProgressLv = 1;
             ProgressBarAnim.SetTrigger("Next");
         }
-        if (ProgressValue >= .6f && ProgressLv == 1)
+        if (progressValue >= 0.6f && ProgressLv == 1)
         {
             ProgressLv = 2;
             ProgressBarAnim.SetTrigger("Next");
         }
-
     }
 }

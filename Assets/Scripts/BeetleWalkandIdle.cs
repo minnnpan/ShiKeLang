@@ -20,7 +20,7 @@ public class BeetleWalkandIdle : MonoBehaviour
         float distance = Vector3.Distance(transform.position, lastPosition);
         // Calculate the speed (distance per frame divided by time between frames)
         speed = distance / Time.deltaTime;
-        Debug.Log(speed);
+        //Debug.Log(speed);
 
         // Update the last position for the next frame
         lastPosition = transform.position;

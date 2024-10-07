@@ -15,6 +15,7 @@ public class GameManager : MonoBehaviour
     public CountdownTimer countdownTimer;
     public CwPaintableTexture PaintableTexture;
     public Texture paintTexture;
+    public BarControl barControl;
     
     [SerializeField] private float winPercentage = 0.8f;
     private bool gameEnded = false;
@@ -124,15 +125,36 @@ public class GameManager : MonoBehaviour
     {
         if (!gameStarted)
         {
+            Debug.Log("game not started, gamemanager update");
             return;  // 如果游戏还没开始，直接返回
         }
 
         if (!gameEnded && !isPaused && coverageCalculator != null)
         {
+
             float coverage = coverageCalculator.GetCurrentCoverage();
             uiManager.UpdateCoverageText(coverage);
+            
+            // Update BarControl
+            if (barControl != null && player != null)
+            {
+                DungBallMovementController movementController = player.GetComponent<DungBallMovementController>();
+                if (movementController != null)
+                {
+                    barControl.UpdateBars(movementController.CurrentSize, coverage);
+                }
+            }
+            else
+            {
+                Debug.Log($"{barControl != null} {player != null}");
+            }
+            
             CheckWinCondition(coverage);
             CheckLoseCondition(coverage);
+            
+        }else
+        {
+            Debug.Log($"{!gameEnded} {!isPaused} {coverageCalculator != null}");
         }
 
         // 添加暂停输入检测
@@ -152,6 +174,7 @@ public class GameManager : MonoBehaviour
 
     private void CheckLoseCondition(float coverage)
     {
+        Debug.Log("check losing condition");
         DungBallMovementController movementController = player.GetComponent<DungBallMovementController>();
         if (hasDroppedDung && coverage < winPercentage && !movementController.HasDung)
         {

@@ -5,7 +5,7 @@ using UnityEngine.Serialization;
 public class DungBallMovementController : MonoBehaviour
 {
     [Header("Size")]
-    [SerializeField] private float minSize = 0.05f;
+    [SerializeField] private float minSize = 0.5f;
     [SerializeField] private float maxSize = 3f;
     [SerializeField] private GameObject shitBall;
     [SerializeField] private float consumeSpeed = 0.1f; // 新增: 消耗速度
@@ -19,7 +19,7 @@ public class DungBallMovementController : MonoBehaviour
     public event Action<float> OnDungDrop;
 
     public float CurrentSize => currentSize;
-    public bool HasDung => currentSize > 0.5f;
+    public bool HasDung => currentSize > minSize;
 
     private void Start()
     {
@@ -37,7 +37,7 @@ public class DungBallMovementController : MonoBehaviour
             float ratio = newSize / currentSize;
             currentSize = newSize;
             UpdateSize(ratio);
-            if (currentSize <= 0.1f)
+            if (currentSize <= minSize)
             {
                 OnDungDrop?.Invoke(consumeAmount);
             }
