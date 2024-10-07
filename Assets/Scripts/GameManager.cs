@@ -8,13 +8,11 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance { get; private set; }
 
     public UIManager uiManager;
-    // public DungBallController dungBallPrefab;
-    public Transform spawnPoint;
-    public DungBallController player;
+    public GameObject player;
     public TextureCoverageAnalyzer coverageCalculator;
+    public Vector3 SpawnPosition;
     
     [SerializeField] private float winPercentage = 0.8f;
-    [SerializeField] private float initialDungSize = 1f;
     private bool gameEnded = false;
     private bool hasDroppedDung = false;
     private bool isPaused = false;
@@ -38,6 +36,7 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         uiManager.ShowStartWindow();
+        SpawnPosition = player.transform.position;
     }
 
     public void StartGame()
@@ -55,37 +54,23 @@ public class GameManager : MonoBehaviour
 
     private void InitializeGame()
     {
-        if (spawnPoint == null)
+        if (player == null)
         {
-            spawnPoint = new GameObject("SpawnPoint").transform;
-            spawnPoint.position = new Vector3(0, 3, 0);
+            Debug.LogError("Player is not set in the scene!");
+            return;
         }
-        //
-        // if (dungBallPrefab != null)
-        // {
-        //     player = Instantiate(dungBallPrefab, spawnPoint.position, Quaternion.identity);
-        //     DungBallMovementController movementController = player.GetComponent<DungBallMovementController>();
-        //     if (movementController != null)
-        //     {
-        //         movementController.enabled = true;
-        //         movementController.InitializeSize(initialDungSize);
-        //         movementController.OnDungPickup += HandleDungPickup;
-        //         movementController.OnDungDrop += HandleDungDrop;
-        //     }
-        // }
-        // else
-        // {
-        //     Debug.LogError("DungBall预制体未设置！");
-        // }
 
-        // if (topDownCamera != null && player != null)
-        // {
-        //     topDownCamera.SetTarget(player.transform);
-        // }
-        // else
-        // {
-        //     Debug.LogWarning("未找�� TopDownCamera 或 player 为空");
-        // }
+        DungBallMovementController movementController = player.GetComponent<DungBallMovementController>();
+        if (movementController != null)
+        {
+            movementController.InitializeSize();
+            movementController.OnDungPickup += HandleDungPickup;
+            movementController.OnDungDrop += HandleDungDrop;
+        }
+        else
+        {
+            Debug.LogError("DungBallMovementController not found on player!");
+        }
 
         if (stampede != null)
         {
@@ -94,6 +79,13 @@ public class GameManager : MonoBehaviour
 
         gameEnded = false;
         hasDroppedDung = false;
+
+        if (coverageCalculator != null)
+        {
+            coverageCalculator.ResetCoverage();
+        }
+
+        ResetGroundTexture();
     }
 
     private void EnablePlayerMovement()
@@ -214,8 +206,7 @@ public class GameManager : MonoBehaviour
 
         if (player != null)
         {
-            Destroy(player.gameObject);
-            player = null;
+            player.transform.position = SpawnPosition;
         }
 
         if (stampede != null)

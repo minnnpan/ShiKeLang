@@ -1,13 +1,16 @@
 using UnityEngine;
 using System;
+using UnityEngine.Serialization;
 
 public class DungBallMovementController : MonoBehaviour
 {
     [Header("Size")]
     [SerializeField] private float minSize = 0.05f;
     [SerializeField] private float maxSize = 3f;
-    [SerializeField] private GameObject shitball;
+    [SerializeField] private GameObject shitBall;
     [SerializeField] private float consumeSpeed = 0.1f; // 新增: 消耗速度
+    private Vector3 initialDungLocalScale;
+    private Vector3 initialDungLocalPosition;
 
     private float currentSize = 1f;
 
@@ -21,6 +24,8 @@ public class DungBallMovementController : MonoBehaviour
     private void Start()
     {
         UpdateSize(1f);
+        initialDungLocalScale = shitBall.transform.localScale;
+        initialDungLocalPosition = shitBall.transform.localPosition;
     }
 
     public void ConsumeDung(float deltaTime)
@@ -34,24 +39,30 @@ public class DungBallMovementController : MonoBehaviour
             UpdateSize(ratio);
             if (currentSize <= 0.1f)
             {
-                OnDungDrop?.Invoke(currentSize);
+                OnDungDrop?.Invoke(consumeAmount);
             }
         }
     }
 
     private void UpdateSize(float ratio)
     {
-        shitball.transform.localScale *= ratio;
+        shitBall.transform.localScale *= ratio;
         OnSizeChanged?.Invoke(currentSize);
         GetComponent<DungBallController>().AdjustDungballPosition(ratio);
     }
 
-    public void IncreaseSize(float multiplier)
+    public void IncreaseSize(float amount)
     {
         float previousSize = currentSize;
-        currentSize = Mathf.Min(maxSize, currentSize * multiplier);
+        currentSize = Mathf.Min(maxSize, currentSize + amount);
         float ratio = currentSize / previousSize;
         UpdateSize(ratio);
-        OnDungPickup?.Invoke(currentSize - previousSize);
+        OnDungPickup?.Invoke(amount);
+    }
+
+    public void InitializeSize()
+    {
+        shitBall.transform.localPosition = initialDungLocalPosition;
+        shitBall.transform.localScale = initialDungLocalScale;
     }
 }
