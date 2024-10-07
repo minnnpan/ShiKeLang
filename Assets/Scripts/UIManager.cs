@@ -9,12 +9,37 @@ public class UIManager : MonoBehaviour
     public GameObject endWindow;
     public TextMeshProUGUI gameResultText;
     public TextMeshProUGUI coverageText;
-
+    public TextMeshProUGUI countdownText;
     private GameManager gameManager;
 
     private void Start()
     {
         gameManager = GameManager.Instance;
+        gameManager.countdownTimer.onCountdownStart.AddListener(() => countdownText.gameObject.SetActive(true));
+        gameManager.countdownTimer.onCountdownEnd.AddListener(() => countdownText.gameObject.SetActive(false));
+        gameManager.countdownTimer.OnCountdownTick += UpdateCountdownText;
+        gameManager.countdownTimer.OnCountdownComplete += ShowGoText;
+    }
+
+    private void OnDestroy()
+    {
+        if (gameManager != null && gameManager.countdownTimer != null)
+        {
+            gameManager.countdownTimer.onCountdownStart.RemoveListener(() => countdownText.gameObject.SetActive(true));
+            gameManager.countdownTimer.onCountdownEnd.RemoveListener(() => countdownText.gameObject.SetActive(false));
+            gameManager.countdownTimer.OnCountdownTick -= UpdateCountdownText;
+            gameManager.countdownTimer.OnCountdownComplete -= ShowGoText;
+        }
+    }
+
+    private void UpdateCountdownText(int number)
+    {
+        countdownText.text = number.ToString();
+    }
+
+    private void ShowGoText()
+    {
+        countdownText.text = "GO!";
     }
 
     public void ShowStartWindow()
@@ -22,6 +47,7 @@ public class UIManager : MonoBehaviour
         startWindow.SetActive(true);
         pausedWindow.SetActive(false);
         endWindow.SetActive(false);
+        gameResultText.gameObject.SetActive(false);
         coverageText.gameObject.SetActive(false);
     }
 
@@ -44,12 +70,9 @@ public class UIManager : MonoBehaviour
 
     public void OnRestartButtonClicked()
     {
-        gameManager.RestartGame();
-        coverageText.gameObject.SetActive(false);
-        endWindow.SetActive(false);
-        pausedWindow.SetActive(false);
-        gameResultText.gameObject.SetActive(false);
+        ShowStartWindow();
         UpdateCoverageText(0f);
+        gameManager.ResetGame();
     }
 
     public void ShowGameResult(bool isWin)
