@@ -13,6 +13,11 @@ public interface StampedeState
 
 public class Stampede : MonoBehaviour, StampedeState
 {
+    public static Stampede Instance { get; private set; }
+
+    public AudioSource musicSource;
+    public AudioClip[] bgmClips;
+    private int currentBGMIndex = 0;
     //踩踏开启状态
     private bool StampedeState = false;
     public void OnEnable()
@@ -57,10 +62,47 @@ public class Stampede : MonoBehaviour, StampedeState
     public float stampedeHeight = 10;
     
     private float elapsedTime = 0f;
-    private float difficultyIncreaseInterval = 30f;
+    private float difficultyIncreaseInterval = 20f;
 
     private Transform[] stampedeLocs;
 
+    void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+    void Start()
+    {
+        if (bgmClips.Length > 0)
+        {
+            StartCoroutine(SwitchBGM());
+        }
+    }
+    IEnumerator SwitchBGM()
+    {
+        while (true)
+        {
+            PlayMusic(bgmClips[currentBGMIndex]);
+            yield return new WaitForSeconds(20f);
+            currentBGMIndex = (currentBGMIndex + 1) % bgmClips.Length;
+        }
+    }
+
+    public void PlayMusic(AudioClip musicClip)
+    {
+        if (musicSource.clip != musicClip)
+        {
+            musicSource.clip = musicClip;
+            musicSource.Play();
+        }
+    }
     //每隔一段时间随机踩踏
     System.Collections.IEnumerator SpawnStampede()
     {
