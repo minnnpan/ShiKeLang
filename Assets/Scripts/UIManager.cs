@@ -11,6 +11,9 @@ public class UIManager : MonoBehaviour
     public TextMeshProUGUI coverageText;
     public TextMeshProUGUI countdownText;
     private GameManager gameManager;
+    public GameObject VictoryImg;
+    public GameObject LoseRunOutPoop;
+    public GameObject LoseGotStamp;
 
     private void Start()
     {
@@ -75,16 +78,40 @@ public class UIManager : MonoBehaviour
         gameManager.ResetGame();
     }
 
-    public void ShowGameResult(bool isWin)
+    public void ShowGameResult(EndGameCondition gameCondition)
     {
-        endWindow.SetActive(true);
-        gameResultText.gameObject.SetActive(true);
-        gameResultText.text = isWin ? "You Win！" : "Game Over！";
-        gameResultText.color = isWin ? Color.green : Color.red;
+        switch (gameCondition)
+        {
+            case EndGameCondition.win:
+                OpenVictory();
+                break;
+            case EndGameCondition.gotStamp:
+                OpenLoseGotStamp();
+                break;
+            case EndGameCondition.outOfPoop:
+                OpenLoseOutOfPoop();
+                break;
+        }
+        
     }
 
     public void UpdateCoverageText(float coverage)
     {
         coverageText.text = $"Coverage: {coverage:P2}";
+    }
+
+    public void OpenVictory()
+    {
+        VictoryImg.SetActive(true);
+    }
+
+    public void OpenLoseOutOfPoop()
+    {
+        LoseRunOutPoop.SetActive(true);
+    }
+
+    public void OpenLoseGotStamp()
+    {
+        LoseGotStamp.SetActive(true);
     }
 }

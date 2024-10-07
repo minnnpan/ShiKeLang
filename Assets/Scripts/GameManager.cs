@@ -4,6 +4,12 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+public enum EndGameCondition
+{
+    win,
+    gotStamp,
+    outOfPoop
+}
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
@@ -43,10 +49,10 @@ public class GameManager : MonoBehaviour
         countdownTimer.onCountdownStart.AddListener(DisablePlayerMovement);
         countdownTimer.onCountdownEnd.AddListener(EnablePlayerMovement);
         PaintableTexture.Texture = paintTexture;
-        uiManager.ShowStartWindow();
         SpawnPosition = player.transform.position;
         InitializeGame();
         DisablePlayerMovement();
+        StartGame();
     }
 
     public void StartGame()
@@ -168,17 +174,16 @@ public class GameManager : MonoBehaviour
     {
         if (coverage >= winPercentage)
         {
-            EndGame(true);
+            EndGame(EndGameCondition.win);
         }
     }
 
     private void CheckLoseCondition(float coverage)
     {
-        Debug.Log("check losing condition");
         DungBallMovementController movementController = player.GetComponent<DungBallMovementController>();
         if (hasDroppedDung && coverage < winPercentage && !movementController.HasDung)
         {
-            EndGame(false);
+            EndGame(EndGameCondition.outOfPoop);
         }
     }
 
@@ -187,14 +192,14 @@ public class GameManager : MonoBehaviour
         hasDroppedDung = true;
     }
 
-    public void EndGame(bool isWin)
+    public void EndGame(EndGameCondition gameCondition)
     {
         if (gameEnded) return;
 
         gameEnded = true;
         isPaused = false;
         Time.timeScale = 1;
-        uiManager.ShowGameResult(isWin);
+        uiManager.ShowGameResult(gameCondition);
 
         // 停止玩家移动
         DisablePlayerMovement();

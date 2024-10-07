@@ -7,7 +7,7 @@ public class Foot: MonoBehaviour
         if (collision.gameObject.CompareTag("Player") || collision.gameObject.CompareTag("Beetle"))
         {
             EffectManager.Instance.PlayEffect("Dungexploded", collision.transform.position);
-            GameManager.Instance.EndGame(false);
+            GameManager.Instance.EndGame(EndGameCondition.gotStamp);
         }
     }
 }
