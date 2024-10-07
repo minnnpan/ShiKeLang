@@ -134,7 +134,7 @@ public class Stampede : MonoBehaviour, StampedeState
     {
         //随机一只脚的影子 并实例化
         int randomIndex_foot = Random.Range(0, stampedeShadow.Length);
-        spawnPosition.y += 0.2f;
+        spawnPosition.y += 0.5f;
         GameObject go = Instantiate(stampedeShadow[randomIndex_foot], spawnPosition, Quaternion.Euler(-90, 0, 0));
         go.transform.localScale = new Vector3(10f, 10f, 50f);
         // 使用 DOTween 放大
