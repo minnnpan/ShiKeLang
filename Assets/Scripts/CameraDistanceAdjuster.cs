@@ -4,19 +4,19 @@ using Cinemachine;
 public class CameraDistanceAdjuster : MonoBehaviour
 {
     public DungBallMovementController dungBallController;
-    public float minDistance = 0.05f;
-    public float maxDistance = 15f;
-    public float distanceMultiplier = 1.05f;
+    public float minDistance = 1.5f;
+    public float maxDistance = 3f;
+    public float distanceMultiplier = 0.02f;
     public float smoothTime = 1f; // 添加平滑时间参数
 
     private CinemachineVirtualCamera virtualCamera;
-    private CinemachineTransposer transposer;
+    private Cinemachine3rdPersonFollow _3rdFollow;
     private float currentVelocity; // 用于SmoothDamp
 
     private void Start()
     {
         virtualCamera = GetComponent<CinemachineVirtualCamera>();
-        transposer = virtualCamera.GetCinemachineComponent<CinemachineTransposer>();
+        _3rdFollow = virtualCamera.GetCinemachineComponent<Cinemachine3rdPersonFollow>();
 
         if (dungBallController == null)
         {
@@ -24,21 +24,22 @@ public class CameraDistanceAdjuster : MonoBehaviour
         }
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
-        if (dungBallController != null && transposer != null)
+        if (dungBallController != null && _3rdFollow != null)
         {
             float ballSize = dungBallController.CurrentSize;
-            float targetDistance = Mathf.Clamp(ballSize * distanceMultiplier, minDistance, maxDistance);
-            
-            Vector3 currentOffset = transposer.m_FollowOffset;
-            float currentDistance = -currentOffset.z;
+            float targetDistance = Mathf.Clamp(2-(1-ballSize) * distanceMultiplier, minDistance, maxDistance);
+            Debug.Log("currentDistance:"+targetDistance);
+            //Vector3 currentOffset = transposer.m_FollowOffset;
+            float currentDistance = _3rdFollow.CameraDistance;
+            float currentArmlength = _3rdFollow.VerticalArmLength;
 
             float newDistance = Mathf.SmoothDamp(currentDistance, targetDistance, ref currentVelocity, smoothTime);
-            
-            Vector3 newOffset = currentOffset;
-            newOffset.z = -newDistance;
-            transposer.m_FollowOffset = newOffset;
+            float newArmlength = Mathf.SmoothDamp(currentArmlength, targetDistance/2, ref currentVelocity, smoothTime);
+            _3rdFollow.CameraDistance = newDistance;
+            _3rdFollow.VerticalArmLength = newArmlength;
+
         }
     }
 }
