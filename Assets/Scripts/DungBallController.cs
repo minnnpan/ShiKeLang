@@ -6,6 +6,8 @@ public class DungBallController : MonoBehaviour
 {
     public GameObject shitball;
     public GameObject beetle;
+    public ParticleSystem DungRollingPS;
+    public ParticleSystem DungPilePickUpPS;
 
     private DungBallMovementController movementController;
     private CustomCwPaintSphere paintSphere;
@@ -38,7 +40,19 @@ public class DungBallController : MonoBehaviour
         paintSphere.SetPaintingAllowed(shouldPaint);
         if (shouldPaint)
         {
+            // EffectManager.Instance.PlayEffect("DungballRolling", shitball.transform.position);
+            if (!DungRollingPS.isPlaying)
+            {
+                DungRollingPS.Play();
+            }
             movementController.ConsumeDung(Time.deltaTime);
+        }
+        else
+        {
+            if (DungRollingPS.isPlaying)
+            {
+                DungRollingPS.Stop();
+            }
         }
     }
 
@@ -46,12 +60,16 @@ public class DungBallController : MonoBehaviour
     {
         if (paintSphere != null)
         {
-            paintSphere.Radius = newSize * 0.5f;
+            paintSphere.Radius = newSize * 0.2f;
         }
     }
 
     public void PickUpDung(DungPile dungPile)
     {
+        if (!DungPilePickUpPS.isPlaying)
+        {
+            DungPilePickUpPS.Play();
+        }
         movementController.IncreaseSize(dungPile.dungSize);
     }
 
