@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour
     public GameObject player;
     public TextureCoverageAnalyzer coverageCalculator;
     public Vector3 SpawnPosition;
+    public CountdownTimer countdownTimer;
     
     [SerializeField] private float winPercentage = 0.8f;
     private bool gameEnded = false;
@@ -35,6 +36,8 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        countdownTimer.onCountdownStart.AddListener(DisablePlayerMovement);
+        countdownTimer.onCountdownEnd.AddListener(EnablePlayerMovement);
         uiManager.ShowStartWindow();
         SpawnPosition = player.transform.position;
     }
@@ -49,7 +52,7 @@ public class GameManager : MonoBehaviour
         
         gameStarted = true;
         InitializeGame();
-        EnablePlayerMovement();  // 添加这一行
+        countdownTimer.StartCountdown();
     }
 
     private void InitializeGame()
@@ -96,6 +99,18 @@ public class GameManager : MonoBehaviour
             if (movementController != null)
             {
                 movementController.enabled = true;
+            }
+        }
+    }
+
+    private void DisablePlayerMovement()
+    {
+        if (player != null)
+        {
+            DungBallMovementController movementController = player.GetComponent<DungBallMovementController>();
+            if (movementController != null)
+            {
+                movementController.enabled = false;
             }
         }
     }
@@ -255,5 +270,7 @@ public class GameManager : MonoBehaviour
                 movementController.OnDungDrop -= HandleDungDrop;
             }
         }
+        countdownTimer.onCountdownStart.RemoveListener(DisablePlayerMovement);
+        countdownTimer.onCountdownEnd.RemoveListener(EnablePlayerMovement);
     }
 }
