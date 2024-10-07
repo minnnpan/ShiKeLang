@@ -46,7 +46,7 @@ public class EffectManager : MonoBehaviour
         }
     }
 
-    public GameObject PlayEffect(string effectName, Vector3 position, Quaternion rotation = default, float duration = 0f)
+    public GameObject PlayEffect(string effectName, Vector3 position, Quaternion rotation, float duration = 0f)
     {
         if (effectPools.TryGetValue(effectName, out Queue<GameObject> pool))
         {
@@ -63,6 +63,38 @@ public class EffectManager : MonoBehaviour
 
             effectInstance.transform.position = position;
             effectInstance.transform.rotation = rotation;
+            effectInstance.SetActive(true);
+
+            if (duration > 0)
+            {
+                StartCoroutine(ReturnToPool(effectInstance, effectName, duration));
+            }
+
+            return effectInstance;
+        }
+        else
+        {
+            Debug.LogWarning($"Effect '{effectName}' not found in EffectManager.");
+            return null;
+        }
+    }
+    
+    public GameObject PlayEffect(string effectName, Vector3 position, float duration = 0f)
+    {
+        if (effectPools.TryGetValue(effectName, out Queue<GameObject> pool))
+        {
+            GameObject effectInstance;
+            if (pool.Count > 0)
+            {
+                effectInstance = pool.Dequeue();
+            }
+            else
+            {
+                EffectEntry entry = effects.Find(e => e.effectName == effectName);
+                effectInstance = Instantiate(entry.effectPrefab);
+            }
+
+            effectInstance.transform.position = position;
             effectInstance.SetActive(true);
 
             if (duration > 0)
