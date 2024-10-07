@@ -4,6 +4,7 @@ using DG.Tweening;
 
 public class DungPileSpawner : MonoBehaviour
 {
+    public GameObject player;
     [SerializeField] private GameObject dungPilePrefab;
     [SerializeField] private int maxDungPiles = 10;
     [SerializeField] private float spawnInterval = 5f;
@@ -27,6 +28,7 @@ public class DungPileSpawner : MonoBehaviour
         {
             SpawnDungPile();
             nextSpawnTime = Time.time + spawnInterval;
+            spawnInterval = Random.Range(2, 5);
         }
     }
 
@@ -48,7 +50,18 @@ public class DungPileSpawner : MonoBehaviour
             return;
         }
 
-        Vector3 randomPosition = GetRandomPositionOnGround(groundRenderer.bounds);
+        float x = Random.Range(3f, 8f);
+        float z = Random.Range(3f, 8f);
+        float i = Random.Range(0, 1);
+        if (i > 0.5f)
+        {
+            i = -1;
+        }
+        else
+        {
+            i = 1;
+        }
+        Vector3 randomPosition = player.transform.position + Vector3.forward * x * i - Vector3.right * z * i;
         float randomSize = Random.Range(minSpawnSize, maxSpawnSize);
 
         Vector3 spawnPosition = randomPosition + Vector3.up * spawnHeight;

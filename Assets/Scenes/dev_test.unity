@@ -38,7 +38,6 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.15880212, g: 0.31024778, b: 0.6256077, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -169,6 +168,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 841e2fe45081a46059ef588cca1b3521, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player: {fileID: 736503014}
   dungPilePrefab: {fileID: 4939265703050789167, guid: 7709806cde9d54ba0be3dfc0c41b033b,
     type: 3}
   maxDungPiles: 10
@@ -1203,12 +1203,12 @@ MonoBehaviour:
   m_RequiresColorTexture: 0
   m_Version: 2
   m_TaaSettings:
-    quality: 3
-    frameInfluence: 0.1
-    jitterScale: 1
-    mipBias: 0
-    varianceClampScale: 0.9
-    contrastAdaptiveSharpening: 0
+    m_Quality: 3
+    m_FrameInfluence: 0.1
+    m_JitterScale: 1
+    m_MipBias: 0
+    m_VarianceClampScale: 0.9
+    m_ContrastAdaptiveSharpening: 0
 --- !u!81 &915134514
 AudioListener:
   m_ObjectHideFlags: 0
@@ -2692,7 +2692,7 @@ MonoBehaviour:
   readAtStart: 1
   downsampleSteps: 3
   registeredPaintableTexture: {fileID: 307356044918297473}
-  cooldown: -4901.3857
+  cooldown: -4904.4927
   maskMesh: {fileID: 0}
   maskSubmesh: 0
   maskTexture: {fileID: 2800000, guid: 0d7652e9cea741e42b6ad60ae0fb24e4, type: 3}
