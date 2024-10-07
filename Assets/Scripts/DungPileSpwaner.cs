@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using DG.Tweening;
 
 public class DungPileSpawner : MonoBehaviour
 {
@@ -8,6 +9,8 @@ public class DungPileSpawner : MonoBehaviour
     [SerializeField] private float spawnInterval = 5f;
     [SerializeField] private float minSpawnSize = 0.5f;
     [SerializeField] private float maxSpawnSize = 2f;
+    [SerializeField] private float spawnHeight = 5f;
+    [SerializeField] private float fallDuration = 1f;
 
     private List<GameObject> activeDungPiles = new List<GameObject>();
     private float nextSpawnTime;
@@ -47,12 +50,23 @@ public class DungPileSpawner : MonoBehaviour
         Vector3 randomPosition = GetRandomPositionOnGround(groundRenderer.bounds);
         float randomSize = Random.Range(minSpawnSize, maxSpawnSize);
 
-        GameObject dungPile = Instantiate(dungPilePrefab, randomPosition, Quaternion.identity);
+        Vector3 spawnPosition = randomPosition + Vector3.up * spawnHeight;
+        GameObject dungPile = Instantiate(dungPilePrefab, spawnPosition, dungPilePrefab.transform.rotation);
+        dungPile.transform.localScale = dungPilePrefab.transform.localScale * randomSize;
+
         DungPile dungPileComponent = dungPile.GetComponent<DungPile>();
         if (dungPileComponent != null)
         {
             dungPileComponent.dungSize = randomSize;
         }
+
+        // 使用DOTween实现落下动画
+        dungPile.transform.DOMoveY(randomPosition.y, fallDuration).SetEase(Ease.OutBounce)
+            .OnComplete(() => {
+                // 触发特效，保持预制体的本地位置和旋转
+                GameObject effect = EffectManager.Instance.PlayEffect("DungBallFalling",
+                    new Vector3(randomPosition.x, 2, randomPosition.z));
+            });
 
         activeDungPiles.Add(dungPile);
     }
@@ -61,7 +75,7 @@ public class DungPileSpawner : MonoBehaviour
     {
         float randomX = Random.Range(groundBounds.min.x, groundBounds.max.x);
         float randomZ = Random.Range(groundBounds.min.z, groundBounds.max.z);
-        float y = groundBounds.max.y + 0.1f; // Slightly above the ground
+        float y = groundBounds.max.y;
 
         return new Vector3(randomX, y, randomZ);
     }
