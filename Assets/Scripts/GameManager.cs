@@ -223,45 +223,45 @@ public class GameManager : MonoBehaviour
 
     public void ResetGame()
     {
-        if (!gameStarted)
-        {
-            Debug.LogWarning("Cannot reset game before it has started. Ignoring ResetGame call.");
-            return;
-        }
-        
-        Debug.Log("Reset Game called. Stack trace: " + Environment.StackTrace);
-        
-        isPaused = false;
-        gameEnded = false;
-        hasDroppedDung = false;
-        gameStarted = false;
-        Time.timeScale = 1;
-
-        if (player != null)
-        {
-            player.transform.position = SpawnPosition;
-            DungBallMovementController movementController = player.GetComponent<DungBallMovementController>();
-            if (movementController != null)
-            {
-                movementController.InitializeSize();
-            }
-        }
-
-        if (stampede != null)
-        {
-            stampede.Reset();
-        }
-
-        if (coverageCalculator != null)
-        {
-            coverageCalculator.ResetCoverage();
-        }
-
-        countdownTimer.ResetTimer();
-
-        DestroyAllDungPiles();
-
-        ResetGroundTexture();
+        // if (!gameStarted)
+        // {
+        //     Debug.LogWarning("Cannot reset game before it has started. Ignoring ResetGame call.");
+        //     return;
+        // }
+        //
+        // Debug.Log("Reset Game called. Stack trace: " + Environment.StackTrace);
+        //
+        // isPaused = false;
+        // gameEnded = false;
+        // hasDroppedDung = false;
+        // gameStarted = false;
+        // Time.timeScale = 1;
+        //
+        // if (player != null)
+        // {
+        //     player.transform.position = SpawnPosition;
+        //     DungBallMovementController movementController = player.GetComponent<DungBallMovementController>();
+        //     if (movementController != null)
+        //     {
+        //         movementController.InitializeSize();
+        //     }
+        // }
+        //
+        // if (stampede != null)
+        // {
+        //     stampede.Reset();
+        // }
+        //
+        // if (coverageCalculator != null)
+        // {
+        //     coverageCalculator.ResetCoverage();
+        // }
+        //
+        // countdownTimer.ResetTimer();
+        //
+        // DestroyAllDungPiles();
+        //
+        // ResetGroundTexture();
 
         ReloadScene();
     }
