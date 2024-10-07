@@ -11,6 +11,7 @@ public class DungPileSpawner : MonoBehaviour
     [SerializeField] private float maxSpawnSize = 2f;
     [SerializeField] private float spawnHeight = 5f;
     [SerializeField] private float fallDuration = 1f;
+    [SerializeField] private Transform dungParent;
 
     private List<GameObject> activeDungPiles = new List<GameObject>();
     private float nextSpawnTime;
@@ -53,6 +54,9 @@ public class DungPileSpawner : MonoBehaviour
         Vector3 spawnPosition = randomPosition + Vector3.up * spawnHeight;
         GameObject dungPile = Instantiate(dungPilePrefab, spawnPosition, dungPilePrefab.transform.rotation);
         dungPile.transform.localScale = dungPilePrefab.transform.localScale * randomSize;
+
+        // 设置父物体
+        dungPile.transform.SetParent(dungParent, true);
 
         DungPile dungPileComponent = dungPile.GetComponent<DungPile>();
         if (dungPileComponent != null)
