@@ -631,6 +631,7 @@ GameObject:
   m_Component:
   - component: {fileID: 852887991}
   - component: {fileID: 852887990}
+  - component: {fileID: 852887992}
   m_Layer: 0
   m_Name: Virtual Camera
   m_TagString: Untagged
@@ -685,7 +686,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 852887989}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.44340527, y: -0.003913927, z: 0.0019362213, w: 0.8963106}
+  m_LocalRotation: {x: 0.44340527, y: -0.0039139576, z: 0.0019362364, w: 0.8963106}
   m_LocalPosition: {x: 4.327713, y: 2.5703406, z: 1.2187192}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -693,6 +694,22 @@ Transform:
   - {fileID: 2118195690}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &852887992
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 852887989}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 16735ff1836504b5cb55ebb31cf35747, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dungBallController: {fileID: 974863673}
+  minDistance: 1
+  maxDistance: 15
+  distanceMultiplier: 1.5
 --- !u!1 &915134511
 GameObject:
   m_ObjectHideFlags: 0
@@ -858,7 +875,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 915134511}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.44340527, y: -0.003913927, z: 0.0019362213, w: 0.8963106}
+  m_LocalRotation: {x: 0.44340527, y: -0.0039139576, z: 0.0019362364, w: 0.8963106}
   m_LocalPosition: {x: 4.327713, y: 2.5703406, z: 1.2187192}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1101,6 +1118,18 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 974863667}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &974863673 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8043026796241241594, guid: 03ab01966e93c4d8db379b3b564ead22,
+    type: 3}
+  m_PrefabInstance: {fileID: 974863667}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 736503014}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 744e1fb8dda794a57a6b600cecd94b87, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1331793106
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1631,7 +1660,7 @@ MonoBehaviour:
   readAtStart: 1
   downsampleSteps: 3
   registeredPaintableTexture: {fileID: 307356044918297473}
-  cooldown: -1466.1907
+  cooldown: -1507.1107
   maskMesh: {fileID: 0}
   maskSubmesh: 0
   maskTexture: {fileID: 2800000, guid: 5198ec4c234698442a07d124b02e156d, type: 3}
