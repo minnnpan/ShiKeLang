@@ -686,8 +686,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 852887989}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.44340527, y: -0.0039139576, z: 0.0019362364, w: 0.8963106}
-  m_LocalPosition: {x: 4.327713, y: 2.5703406, z: 1.2187192}
+  m_LocalRotation: {x: 0.4433797, y: -0.0042954036, z: 0.0021247906, w: 0.8963211}
+  m_LocalPosition: {x: 4.327713, y: 1.7703408, z: 1.8287193}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -710,6 +710,7 @@ MonoBehaviour:
   minDistance: 1
   maxDistance: 15
   distanceMultiplier: 1.5
+  smoothTime: 1
 --- !u!1 &915134511
 GameObject:
   m_ObjectHideFlags: 0
@@ -875,8 +876,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 915134511}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.44340527, y: -0.0039139576, z: 0.0019362364, w: 0.8963106}
-  m_LocalPosition: {x: 4.327713, y: 2.5703406, z: 1.2187192}
+  m_LocalRotation: {x: 0.4433797, y: -0.0042954036, z: 0.0021247906, w: 0.8963211}
+  m_LocalPosition: {x: 4.327713, y: 1.7703408, z: 1.8287193}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -895,6 +896,11 @@ PrefabInstance:
       propertyPath: turnSpeed
       value: 30
       objectReference: {fileID: 0}
+    - target: {fileID: 2869441336373051202, guid: 03ab01966e93c4d8db379b3b564ead22,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 6d018472f3fe1c241a706f725ab5665d, type: 2}
     - target: {fileID: 3772824927260443574, guid: 03ab01966e93c4d8db379b3b564ead22,
         type: 3}
       propertyPath: m_LocalScale.x
@@ -913,7 +919,7 @@ PrefabInstance:
     - target: {fileID: 3772824927260443574, guid: 03ab01966e93c4d8db379b3b564ead22,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.89
+      value: -1.55
       objectReference: {fileID: 0}
     - target: {fileID: 3772824927260443574, guid: 03ab01966e93c4d8db379b3b564ead22,
         type: 3}
@@ -1088,7 +1094,7 @@ PrefabInstance:
     - target: {fileID: 7747775166675675413, guid: 03ab01966e93c4d8db379b3b564ead22,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.67
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7747775166675675413, guid: 03ab01966e93c4d8db379b3b564ead22,
         type: 3}
@@ -1660,7 +1666,7 @@ MonoBehaviour:
   readAtStart: 1
   downsampleSteps: 3
   registeredPaintableTexture: {fileID: 307356044918297473}
-  cooldown: -1507.1107
+  cooldown: -1715.2299
   maskMesh: {fileID: 0}
   maskSubmesh: 0
   maskTexture: {fileID: 2800000, guid: 5198ec4c234698442a07d124b02e156d, type: 3}
@@ -2137,7 +2143,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BindingMode: 1
-  m_FollowOffset: {x: 0, y: 2, z: -1.22}
+  m_FollowOffset: {x: 0, y: 1.2, z: -0.61}
   m_XDamping: 1
   m_YDamping: 0.5
   m_ZDamping: 1
