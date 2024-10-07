@@ -6,12 +6,9 @@ public class DungBallController : MonoBehaviour
 {
     public GameObject shitball;
     public GameObject beetle;
-    public float groundOffset = 0.1f; // 与地面的偏移量
-    public float beetleOffset = 0.1f; // 与甲虫模型的偏移量
 
     private DungBallMovementController movementController;
     private CustomCwPaintSphere paintSphere;
-    private float previousRadius;
     private Renderer shitballRenderer;
 
     private void Awake()
@@ -28,7 +25,6 @@ public class DungBallController : MonoBehaviour
             Debug.LogWarning("CustomCwPaintSphere component not found on DungBall!");
         }
         shitballRenderer = shitball.GetComponentInChildren<Renderer>();
-        previousRadius = shitballRenderer.bounds.extents.y;
     }
 
     private void Update()

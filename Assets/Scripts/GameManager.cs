@@ -2,6 +2,7 @@ using System;
 using PaintCore;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -12,6 +13,9 @@ public class GameManager : MonoBehaviour
     public TextureCoverageAnalyzer coverageCalculator;
     public Vector3 SpawnPosition;
     public CountdownTimer countdownTimer;
+    public CwPaintableTexture PaintableTexture;
+    public Texture paintTexture;
+    public BarControl barControl;
     
     [SerializeField] private float winPercentage = 0.8f;
     private bool gameEnded = false;
@@ -38,8 +42,11 @@ public class GameManager : MonoBehaviour
     {
         countdownTimer.onCountdownStart.AddListener(DisablePlayerMovement);
         countdownTimer.onCountdownEnd.AddListener(EnablePlayerMovement);
+        PaintableTexture.Texture = paintTexture;
         uiManager.ShowStartWindow();
         SpawnPosition = player.transform.position;
+        InitializeGame();
+        DisablePlayerMovement();
     }
 
     public void StartGame()
@@ -51,7 +58,6 @@ public class GameManager : MonoBehaviour
         }
         
         gameStarted = true;
-        InitializeGame();
         countdownTimer.StartCountdown();
     }
 
@@ -95,10 +101,10 @@ public class GameManager : MonoBehaviour
     {
         if (player != null)
         {
-            DungBallMovementController movementController = player.GetComponent<DungBallMovementController>();
-            if (movementController != null)
+            BeetleController beetleController = player.GetComponent<BeetleController>();
+            if (beetleController != null)
             {
-                movementController.enabled = true;
+                beetleController.enabled = true;
             }
         }
     }
@@ -107,10 +113,10 @@ public class GameManager : MonoBehaviour
     {
         if (player != null)
         {
-            DungBallMovementController movementController = player.GetComponent<DungBallMovementController>();
-            if (movementController != null)
+            BeetleController beetleController = player.GetComponent<BeetleController>();
+            if (beetleController != null)
             {
-                movementController.enabled = false;
+                beetleController.enabled = false;
             }
         }
     }
@@ -119,15 +125,36 @@ public class GameManager : MonoBehaviour
     {
         if (!gameStarted)
         {
+            Debug.Log("game not started, gamemanager update");
             return;  // 如果游戏还没开始，直接返回
         }
 
         if (!gameEnded && !isPaused && coverageCalculator != null)
         {
+
             float coverage = coverageCalculator.GetCurrentCoverage();
             uiManager.UpdateCoverageText(coverage);
+            
+            // Update BarControl
+            if (barControl != null && player != null)
+            {
+                DungBallMovementController movementController = player.GetComponent<DungBallMovementController>();
+                if (movementController != null)
+                {
+                    barControl.UpdateBars(movementController.CurrentSize, coverage);
+                }
+            }
+            else
+            {
+                Debug.Log($"{barControl != null} {player != null}");
+            }
+            
             CheckWinCondition(coverage);
             CheckLoseCondition(coverage);
+            
+        }else
+        {
+            Debug.Log($"{!gameEnded} {!isPaused} {coverageCalculator != null}");
         }
 
         // 添加暂停输入检测
@@ -147,6 +174,7 @@ public class GameManager : MonoBehaviour
 
     private void CheckLoseCondition(float coverage)
     {
+        Debug.Log("check losing condition");
         DungBallMovementController movementController = player.GetComponent<DungBallMovementController>();
         if (hasDroppedDung && coverage < winPercentage && !movementController.HasDung)
         {
@@ -169,17 +197,7 @@ public class GameManager : MonoBehaviour
         uiManager.ShowGameResult(isWin);
 
         // 停止玩家移动
-        if (player != null)
-        {
-            DungBallMovementController movementController = player.GetComponent<DungBallMovementController>();
-            if (movementController != null)
-            {
-                movementController.enabled = false;
-            }
-        }
-
-        // 销毁所有 DungPile 对象
-        DestroyAllDungPiles();
+        DisablePlayerMovement();
 
         if (stampede != null)
         {
@@ -203,15 +221,15 @@ public class GameManager : MonoBehaviour
         uiManager.TogglePauseMenu(isPaused);
     }
 
-    public void RestartGame()
+    public void ResetGame()
     {
         if (!gameStarted)
         {
-            Debug.LogWarning("Cannot restart game before it has started. Ignoring RestartGame call.");
+            Debug.LogWarning("Cannot reset game before it has started. Ignoring ResetGame call.");
             return;
         }
         
-        Debug.Log("RestartGame called. Stack trace: " + Environment.StackTrace);
+        Debug.Log("Reset Game called. Stack trace: " + Environment.StackTrace);
         
         isPaused = false;
         gameEnded = false;
@@ -222,6 +240,11 @@ public class GameManager : MonoBehaviour
         if (player != null)
         {
             player.transform.position = SpawnPosition;
+            DungBallMovementController movementController = player.GetComponent<DungBallMovementController>();
+            if (movementController != null)
+            {
+                movementController.InitializeSize();
+            }
         }
 
         if (stampede != null)
@@ -233,9 +256,19 @@ public class GameManager : MonoBehaviour
         {
             coverageCalculator.ResetCoverage();
         }
-        
 
-        uiManager.ShowStartWindow();
+        countdownTimer.ResetTimer();
+
+        DestroyAllDungPiles();
+
+        ResetGroundTexture();
+
+        ReloadScene();
+    }
+    
+    public void ReloadScene()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     private void HandleDungPickup(float size)
@@ -251,11 +284,9 @@ public class GameManager : MonoBehaviour
 
     public void ResetGroundTexture()
     {
-        // 假设地面使用了 PaintIn3D 的 P3dPaintableTexture 组件
-        CwPaintableTexture paintableTexture = FindObjectOfType<CwPaintableTexture>();
-        if (paintableTexture != null)
+        if (PaintableTexture != null)
         {
-            paintableTexture.Clear();
+            PaintableTexture.Clear(paintTexture, Color.white);
         }
     }
 

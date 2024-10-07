@@ -30,7 +30,7 @@ public class CameraDistanceAdjuster : MonoBehaviour
         {
             float ballSize = dungBallController.CurrentSize;
             float targetDistance = Mathf.Clamp(2-(1-ballSize) * distanceMultiplier, minDistance, maxDistance);
-            Debug.Log("currentDistance:"+targetDistance);
+            // Debug.Log("currentDistance:"+targetDistance);
             //Vector3 currentOffset = transposer.m_FollowOffset;
             float currentDistance = _3rdFollow.CameraDistance;
             float currentArmlength = _3rdFollow.VerticalArmLength;
