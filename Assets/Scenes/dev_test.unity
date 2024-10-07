@@ -223,6 +223,63 @@ Transform:
   m_Children: []
   m_Father: {fileID: 419536409}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &317585453
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 317585454}
+  - component: {fileID: 317585455}
+  m_Layer: 0
+  m_Name: EffectManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &317585454
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 317585453}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 419536409}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &317585455
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 317585453}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39026ace2fcf144bbb9543ebad0466a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  effects:
+  - effectName: DungBallFalling
+    effectPrefab: {fileID: 2283301230017719363, guid: 20208669762c7c74caf0f852a5382448,
+      type: 3}
+    poolSize: 10
+  - effectName: Dungexploded
+    effectPrefab: {fileID: 6547239633658920484, guid: a82c42edee07c304481d56f4480ab5a6,
+      type: 3}
+    poolSize: 10
+  - effectName: Trampling
+    effectPrefab: {fileID: 248466943203333933, guid: 626eb5d864fbc014cb60cf1cef66c8d2,
+      type: 3}
+    poolSize: 10
 --- !u!1 &419536408
 GameObject:
   m_ObjectHideFlags: 0
@@ -257,6 +314,7 @@ Transform:
   - {fileID: 1912291558}
   - {fileID: 1649326611}
   - {fileID: 308251015}
+  - {fileID: 317585454}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &505524478
@@ -1905,7 +1963,7 @@ MonoBehaviour:
   readAtStart: 1
   downsampleSteps: 3
   registeredPaintableTexture: {fileID: 307356044918297473}
-  cooldown: -2617.463
+  cooldown: -2683.7717
   maskMesh: {fileID: 0}
   maskSubmesh: 0
   maskTexture: {fileID: 2800000, guid: 5198ec4c234698442a07d124b02e156d, type: 3}
