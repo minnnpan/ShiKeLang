@@ -153,7 +153,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   minSize: 0.05
   maxSize: 3
-  shitball: {fileID: 739600355238246226}
+  shitBall: {fileID: 739600355238246226}
   consumeSpeed: 0.1
 --- !u!114 &4036693575980648536
 MonoBehaviour:
