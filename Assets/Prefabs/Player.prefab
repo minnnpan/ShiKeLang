@@ -91,10 +91,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 2.6765227
-  m_Height: 6.8246074
+  m_Radius: 2.8566098
+  m_Height: 7.0152893
   m_Direction: 1
-  m_Center: {x: -0.044219494, y: 3.2075975, z: 2.1874595}
+  m_Center: {x: -0.044219494, y: 3.112257, z: 2.3675466}
 --- !u!54 &8703356778651737967
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -152,8 +152,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shitball: {fileID: 739600355238246226}
   beetle: {fileID: 5079774053413919756}
-  groundOffset: 0.1
-  beetleOffset: 0.1
 --- !u!114 &2087997245979582366
 MonoBehaviour:
   m_ObjectHideFlags: 0
