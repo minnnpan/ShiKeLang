@@ -48,6 +48,7 @@ public class UIManager : MonoBehaviour
         coverageText.gameObject.SetActive(false);
         endWindow.SetActive(false);
         pausedWindow.SetActive(false);
+        gameResultText.gameObject.SetActive(false);
         UpdateCoverageText(0f);
     }
 
