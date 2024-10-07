@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028326, g: 0.22571333, b: 0.30692202, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028314, g: 0.22571464, b: 0.30692175, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -173,6 +173,8 @@ MonoBehaviour:
   spawnInterval: 5
   minSpawnSize: 0.5
   maxSpawnSize: 2
+  spawnHeight: 5
+  fallDuration: 1
 --- !u!1 &308251013
 GameObject:
   m_ObjectHideFlags: 0
@@ -656,14 +658,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 136cff446bcb0ae4aa084eabe1ac190a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player: {fileID: 0}
+  playerFootMaxDistance: 0
+  stampedeFoots: []
+  stampedeShadow: []
+  stampedeLoc: {fileID: 0}
   stampedeInterval: 3
   stampedeMaxFoots: 3
-  spawnAreaSize: {x: 10, y: 10}
-  stampedeCircle: {fileID: 6461156585239327559, guid: 58fab903323d16f4caafb1e86ffdac03,
-    type: 3}
   stampedeTime: 1
-  stampedeFoot: {fileID: 795432647343999809, guid: 01abe152f2bb7534b9cf92dec549a4a7,
-    type: 3}
   stampedeHeight: 10
 --- !u!4 &827978485
 Transform:
@@ -1500,7 +1502,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!108 &1365115482
 Light:
   m_ObjectHideFlags: 0
@@ -1963,7 +1965,7 @@ MonoBehaviour:
   readAtStart: 1
   downsampleSteps: 3
   registeredPaintableTexture: {fileID: 307356044918297473}
-  cooldown: -2950.202
+  cooldown: -2954.7268
   maskMesh: {fileID: 0}
   maskSubmesh: 0
   maskTexture: {fileID: 2800000, guid: 5198ec4c234698442a07d124b02e156d, type: 3}
