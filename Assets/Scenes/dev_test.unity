@@ -167,7 +167,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 841e2fe45081a46059ef588cca1b3521, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dungPilePrefab: {fileID: 7537248214932860697, guid: 64494c9055ac84a9b82ad5f14e911db7,
+  dungPilePrefab: {fileID: 4939265703050789167, guid: 7709806cde9d54ba0be3dfc0c41b033b,
     type: 3}
   maxDungPiles: 10
   spawnInterval: 5
@@ -1963,7 +1963,7 @@ MonoBehaviour:
   readAtStart: 1
   downsampleSteps: 3
   registeredPaintableTexture: {fileID: 307356044918297473}
-  cooldown: -2683.7717
+  cooldown: -2950.202
   maskMesh: {fileID: 0}
   maskSubmesh: 0
   maskTexture: {fileID: 2800000, guid: 5198ec4c234698442a07d124b02e156d, type: 3}
