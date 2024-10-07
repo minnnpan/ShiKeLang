@@ -524,6 +524,10 @@ MonoBehaviour:
   player: {fileID: 0}
   coverageCalculator: {fileID: 0}
   SpawnPosition: {x: 0, y: 0, z: 0}
+  countdownTimer: {fileID: 0}
+  PaintableTexture: {fileID: 0}
+  paintTexture: {fileID: 0}
+  barControl: {fileID: 0}
   winPercentage: 0.8
   stampede: {fileID: 0}
 --- !u!1 &635075280
@@ -1179,6 +1183,8 @@ MonoBehaviour:
   spawnInterval: 5
   minSpawnSize: 0.5
   maxSpawnSize: 2
+  spawnHeight: 5
+  fallDuration: 1
 --- !u!1 &1277248816
 GameObject:
   m_ObjectHideFlags: 0
@@ -1640,7 +1646,7 @@ Transform:
   m_GameObject: {fileID: 2133099646}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.111, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.43910885, y: 0.43910885, z: 0.43910885}
   m_ConstrainProportionsScale: 0
   m_Children: []
