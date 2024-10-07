@@ -159,6 +159,7 @@ public class Stampede : MonoBehaviour, StampedeState
         // 下落到指定位置
         foot.transform.DOMoveY(0.8f, stampedeTime-0.12f).SetEase(Ease.InSine).OnComplete(() =>
         {
+            EffectManager.Instance.PlayEffect("Trampling", foot.transform.position);
             // 左右摇晃
             foot.transform.DOShakePosition(1f, new Vector3(0.1f, 0, 0.1f), 10, 90, false, true).OnComplete(() =>
             {
