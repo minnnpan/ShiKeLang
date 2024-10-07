@@ -19,7 +19,7 @@ public class DungBallMovementController : MonoBehaviour
     public event Action<float> OnDungDrop;
 
     public float CurrentSize => currentSize;
-    public bool HasDung => currentSize > 0.1f;
+    public bool HasDung => currentSize > 0.5f;
 
     private void Start()
     {
@@ -64,5 +64,7 @@ public class DungBallMovementController : MonoBehaviour
     {
         shitBall.transform.localPosition = initialDungLocalPosition;
         shitBall.transform.localScale = initialDungLocalScale;
+
+        currentSize = 1f;
     }
 }

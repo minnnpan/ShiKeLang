@@ -47,6 +47,7 @@ public class UIManager : MonoBehaviour
         startWindow.SetActive(true);
         pausedWindow.SetActive(false);
         endWindow.SetActive(false);
+        gameResultText.gameObject.SetActive(false);
         coverageText.gameObject.SetActive(false);
     }
 
@@ -69,12 +70,9 @@ public class UIManager : MonoBehaviour
 
     public void OnRestartButtonClicked()
     {
-        gameManager.RestartGame();
-        coverageText.gameObject.SetActive(false);
-        endWindow.SetActive(false);
-        pausedWindow.SetActive(false);
-        gameResultText.gameObject.SetActive(false);
+        ShowStartWindow();
         UpdateCoverageText(0f);
+        gameManager.ResetGame();
     }
 
     public void ShowGameResult(bool isWin)

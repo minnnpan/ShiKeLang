@@ -53,4 +53,9 @@ public class CountdownTimer : MonoBehaviour
         isCountingDown = false;
         onCountdownEnd.Invoke();
     }
+
+    public void ResetTimer()
+    {
+        StopAllCoroutines();
+    }
 }
