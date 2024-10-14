@@ -17,6 +17,7 @@ public class DungBallController : MonoBehaviour
     {
         movementController = GetComponent<DungBallMovementController>();
         paintSphere = GetComponent<CustomCwPaintSphere>();
+        shitballRenderer = shitball.GetComponentInChildren<Renderer>();
     }
 
     private void Start()
@@ -26,7 +27,11 @@ public class DungBallController : MonoBehaviour
         {
             Debug.LogWarning("CustomCwPaintSphere component not found on DungBall!");
         }
-        shitballRenderer = shitball.GetComponentInChildren<Renderer>();
+    }
+
+    private void OnDestroy()
+    {
+        movementController.OnSizeChanged -= HandleSizeChanged;
     }
 
     private void Update()
