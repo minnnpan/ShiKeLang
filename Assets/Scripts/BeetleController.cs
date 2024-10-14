@@ -15,7 +15,7 @@ public class BeetleController : MonoBehaviour
     private float currentSpeed = 0f; // 当前速度
     private Animator animator;
     private float maxBallRotationSpeed = 360f;
-    private void Start()
+    private void Awake()
     {
         animator = beetle.GetComponent<Animator>();
     }

@@ -7,9 +7,12 @@ public class BlinkEffect : MonoBehaviour
 
     private Renderer objectRenderer;
 
-    void Start()
+    private void Awake()
     {
         objectRenderer = GetComponent<Renderer>();
+    }
+    void Start()
+    {
         StartCoroutine(Blink());
     }
 

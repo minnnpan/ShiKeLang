@@ -13,11 +13,14 @@ public class CameraDistanceAdjuster : MonoBehaviour
     private Cinemachine3rdPersonFollow _3rdFollow;
     private float currentVelocity; // 用于SmoothDamp
 
-    private void Start()
+    private void Awake()
     {
         virtualCamera = GetComponent<CinemachineVirtualCamera>();
         _3rdFollow = virtualCamera.GetCinemachineComponent<Cinemachine3rdPersonFollow>();
+    }
 
+    private void Start()
+    {
         if (dungBallController == null)
         {
             dungBallController = FindObjectOfType<DungBallMovementController>();

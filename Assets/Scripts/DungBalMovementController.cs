@@ -20,12 +20,13 @@ public class DungBallMovementController : MonoBehaviour
 
     public float CurrentSize => currentSize;
     public bool HasDung => currentSize > minSize;
-
+    private void Awake() {
+        initialDungLocalScale = shitBall.transform.localScale;
+        initialDungLocalPosition = shitBall.transform.localPosition;
+    }
     private void Start()
     {
         UpdateSize(1f);
-        initialDungLocalScale = shitBall.transform.localScale;
-        initialDungLocalPosition = shitBall.transform.localPosition;
     }
 
     public void ConsumeDung(float deltaTime)
