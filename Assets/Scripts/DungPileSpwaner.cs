@@ -34,41 +34,29 @@ public class DungPileSpawner : MonoBehaviour
 
     private void SpawnDungPile()
     {
-        GameObject[] groundObjects = GameObject.FindGameObjectsWithTag("Ground");
-        if (groundObjects.Length == 0)
-        {
-            Debug.LogWarning("No objects with 'Ground' tag found!");
-            return;
-        }
-
-        GameObject randomGround = groundObjects[Random.Range(0, groundObjects.Length)];
-        Renderer groundRenderer = randomGround.GetComponent<Renderer>();
-
-        if (groundRenderer == null)
-        {
-            Debug.LogWarning("Selected ground object has no Renderer component!");
-            return;
-        }
-
-        float x = Random.Range(3f, 8f);
-        float z = Random.Range(3f, 8f);
-        float i = Random.Range(0, 1);
-        if (i > 0.5f)
-        {
-            i = -1;
-        }
-        else
-        {
-            i = 1;
-        }
-        Vector3 randomPosition = player.transform.position + Vector3.forward * x * i - Vector3.right * z * i;
         float randomSize = Random.Range(minSpawnSize, maxSpawnSize);
+        Vector3 spawnPosition;
+        int attempts = 0;
+        const int maxAttempts = 10;
 
-        Vector3 spawnPosition = randomPosition + Vector3.up * spawnHeight;
-        GameObject dungPile = Instantiate(dungPilePrefab, spawnPosition, dungPilePrefab.transform.rotation);
+        do
+        {
+            float x = Random.Range(3f, 8f) * (Random.value > 0.5f ? 1 : -1);
+            float z = Random.Range(3f, 8f) * (Random.value > 0.5f ? 1 : -1);
+            spawnPosition = player.transform.position + Vector3.forward * x - Vector3.right * z;
+            attempts++;
+        } while (!IsValidSpawnPosition(spawnPosition, randomSize) && attempts < maxAttempts);
+
+        if (attempts >= maxAttempts)
+        {
+            Debug.LogWarning("Failed to find a valid spawn position for DungPile");
+            return;
+        }
+
+        Vector3 finalSpawnPosition = spawnPosition + Vector3.up * spawnHeight;
+        GameObject dungPile = Instantiate(dungPilePrefab, finalSpawnPosition, dungPilePrefab.transform.rotation);
         dungPile.transform.localScale = dungPilePrefab.transform.localScale * randomSize;
 
-        // 设置父物体
         dungPile.transform.SetParent(dungParent, true);
 
         DungPile dungPileComponent = dungPile.GetComponent<DungPile>();
@@ -77,12 +65,10 @@ public class DungPileSpawner : MonoBehaviour
             dungPileComponent.dungSize = randomSize;
         }
 
-        // 使用DOTween实现落下动画
-        dungPile.transform.DOMoveY(randomPosition.y, fallDuration).SetEase(Ease.OutBounce)
+        dungPile.transform.DOMoveY(spawnPosition.y, fallDuration).SetEase(Ease.OutBounce)
             .OnComplete(() => {
-                // 触发特效，保持预制体的本地位置和旋转
                 GameObject effect = EffectManager.Instance.PlayEffect("DungBallFalling",
-                    new Vector3(randomPosition.x, 2, randomPosition.z));
+                    new Vector3(spawnPosition.x, 2, spawnPosition.z));
             });
 
         activeDungPiles.Add(dungPile);
@@ -100,5 +86,19 @@ public class DungPileSpawner : MonoBehaviour
     public void RemoveDungPile(GameObject dungPile)
     {
         activeDungPiles.Remove(dungPile);
+    }
+
+    private bool IsValidSpawnPosition(Vector3 position, float dungSize)
+    {
+        // 射线检测
+        RaycastHit hit;
+        if (!Physics.Raycast(position + Vector3.up * 5f, Vector3.down, out hit, 10f, LayerMask.GetMask("Ground")))
+        {
+            return false;
+        }
+
+        // 重叠检测
+        Collider[] colliders = Physics.OverlapSphere(hit.point + Vector3.up * dungSize * 0.5f, dungSize * 0.5f);
+        return colliders.Length == 0;
     }
 }
