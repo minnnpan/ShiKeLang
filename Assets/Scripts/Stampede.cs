@@ -15,9 +15,9 @@ public class Stampede : MonoBehaviour, StampedeState
 {
     public static Stampede Instance { get; private set; }
 
-    public AudioSource musicSource;
-    public AudioClip[] bgmClips;
-    private int currentBGMIndex = 0;
+    // public AudioSource musicSource;
+    // public AudioClip[] bgmClips;
+    // private int currentBGMIndex = 0;
     //踩踏开启状态
     private bool StampedeState = false;
     public void OnEnable()
@@ -66,43 +66,43 @@ public class Stampede : MonoBehaviour, StampedeState
 
     private Transform[] stampedeLocs;
 
+    public event Action<int> OnDifficultyIncreased;
+    private int currentDifficultyLevel = 0;
+    private const int MaxDifficultyLevel = 2;
+
     void Awake()
     {
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject);
+            // DontDestroyOnLoad(gameObject);
         }
         else
         {
             Destroy(gameObject);
         }
     }
-    void Start()
-    {
-        if (bgmClips.Length > 0)
-        {
-            StartCoroutine(SwitchBGM());
-        }
-    }
-    IEnumerator SwitchBGM()
-    {
-        while (true)
-        {
-            PlayMusic(bgmClips[currentBGMIndex]);
-            yield return new WaitForSeconds(20f);
-            currentBGMIndex = (currentBGMIndex + 1) % bgmClips.Length;
-        }
-    }
+    // void Start()
+    // {
+    //     if (bgmClips.Length > 0)
+    //     {
+    //         StartCoroutine(SwitchBGM());
+    //     }
+    // }
+    // IEnumerator SwitchBGM()
+    // {
+    //     while (true)
+    //     {
+    //         PlayMusic(bgmClips[currentBGMIndex]);
+    //         yield return new WaitForSeconds(20f);
+    //         currentBGMIndex = (currentBGMIndex + 1) % bgmClips.Length;
+    //     }
+    // }
 
-    public void PlayMusic(AudioClip musicClip)
-    {
-        if (musicSource.clip != musicClip)
-        {
-            musicSource.clip = musicClip;
-            musicSource.Play();
-        }
-    }
+    // public void PlayMusic(AudioClip musicClip)
+    // {
+    //     SoundManager.Instance.Play(musicClip.name);
+    // }
     //每隔一段时间随机踩踏
     System.Collections.IEnumerator SpawnStampede()
     {
@@ -112,7 +112,7 @@ public class Stampede : MonoBehaviour, StampedeState
             int objectCount = Random.Range(1, stampedeMaxFoots + 1);
             //找到玩家周边范围内的多个位置
             List<Vector3> selectedPos = GetRandomNearbyPositions(objectCount);
-            //生成Foot
+            //生���Foot
             for (int i = 0; i < selectedPos.Count; i++)
             {
                 SpawnFoot(selectedPos[i]);
@@ -149,9 +149,13 @@ public class Stampede : MonoBehaviour, StampedeState
 
     private void IncreaseDifficulty()
     {
-        stampedeInterval = Mathf.Max(stampedeInterval * 0.9f, 0.5f);
-        stampedeMaxFoots = Mathf.Min(stampedeMaxFoots + 1, 10);
-        //spawnAreaSize *= 1.1f;
+        if (currentDifficultyLevel < MaxDifficultyLevel)
+        {
+            currentDifficultyLevel++;
+            stampedeInterval = Mathf.Max(stampedeInterval * 0.9f, 0.5f);
+            stampedeMaxFoots = Mathf.Min(stampedeMaxFoots + 1, 10);
+            OnDifficultyIncreased?.Invoke(currentDifficultyLevel);
+        }
     }
     
     //读取子物体的transform
@@ -218,7 +222,7 @@ public class Stampede : MonoBehaviour, StampedeState
         OnDisable();
         stampedeInterval = 3;
         stampedeMaxFoots = 3;
-        //spawnAreaSize = new Vector2(10f, 10f);
         elapsedTime = 0f;
+        currentDifficultyLevel = 0;
     }
 }

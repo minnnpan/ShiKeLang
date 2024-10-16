@@ -3,6 +3,7 @@ using PaintCore;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.Collections;
 
 public enum EndGameCondition
 {
@@ -10,6 +11,15 @@ public enum EndGameCondition
     gotStamp,
     outOfPoop
 }
+
+public enum GameState
+{
+    NotStarted,
+    Playing,
+    Ended,
+    Result
+}
+
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
@@ -32,15 +42,26 @@ public class GameManager : MonoBehaviour
     // public TopDownCamera topDownCamera;
     public Stampede stampede;
     
+    public GameState currentState = GameState.NotStarted;
+    public string[] gameBGMs = new string[3]; // 对应三个阶段的BGM名称
+    public string victorySound;
+    public string defeatSound;
+    public string victoryBGM;
+    public string defeatBGM;
+    private float gameTimer = 0f;
+    private int currentBGMIndex = 0;
+    
     private void Awake()
     {
         if (Instance == null)
         {
             Instance = this;
+            // DontDestroyOnLoad(gameObject);
         }
-        else
+        else if (Instance != this)
         {
             Destroy(gameObject);
+            return;
         }
     }
 
@@ -57,13 +78,17 @@ public class GameManager : MonoBehaviour
 
     public void StartGame()
     {
-        if (gameStarted)
+        if (currentState != GameState.NotStarted)
         {
-            Debug.LogWarning("Game is already started. Ignoring StartGame call.");
+            Debug.LogWarning("Game is not in NotStarted state. Ignoring StartGame call.");
             return;
         }
         
+        currentState = GameState.Playing;
         gameStarted = true;
+        currentBGMIndex = 0;
+        SoundManager.Instance.Play(gameBGMs[currentBGMIndex]);
+        Debug.Log($"Started playing BGM: {gameBGMs[currentBGMIndex]}");
         countdownTimer.StartCountdown();
     }
 
@@ -89,6 +114,7 @@ public class GameManager : MonoBehaviour
 
         if (stampede != null)
         {
+            stampede.OnDifficultyIncreased += HandleDifficultyIncrease;
             stampede.OnEnable();
         }
 
@@ -194,19 +220,53 @@ public class GameManager : MonoBehaviour
 
     public void EndGame(EndGameCondition gameCondition)
     {
-        if (gameEnded) return;
+        if (currentState != GameState.Playing) return;
 
+        currentState = GameState.Ended;
         gameEnded = true;
         isPaused = false;
         Time.timeScale = 1;
-        uiManager.ShowGameResult(gameCondition);
 
-        // 停止玩家移动
+        // Play victory or defeat sound
+        if (gameCondition == EndGameCondition.win)
+        {
+            SoundManager.Instance.Play(victorySound);
+        }
+        else
+        {
+            SoundManager.Instance.Play(defeatSound);
+        }
+
+        // Stop game BGM
+        SoundManager.Instance.Stop(gameBGMs[currentBGMIndex]);
+
+        // Disable player movement
         DisablePlayerMovement();
 
         if (stampede != null)
         {
             stampede.OnDisable();
+        }
+
+        // Show game result after a short delay
+        StartCoroutine(ShowGameResultAfterDelay(gameCondition));
+    }
+
+    private System.Collections.IEnumerator ShowGameResultAfterDelay(EndGameCondition gameCondition)
+    {
+        yield return new WaitForSeconds(1f); // Wait for 2 seconds
+
+        currentState = GameState.Result;
+        uiManager.ShowGameResult(gameCondition);
+
+        // Play victory or defeat BGM
+        if (gameCondition == EndGameCondition.win)
+        {
+            SoundManager.Instance.Play(victoryBGM);
+        }
+        else
+        {
+            SoundManager.Instance.Play(defeatBGM);
         }
     }
 
@@ -228,46 +288,35 @@ public class GameManager : MonoBehaviour
 
     public void ResetGame()
     {
-        // if (!gameStarted)
-        // {
-        //     Debug.LogWarning("Cannot reset game before it has started. Ignoring ResetGame call.");
-        //     return;
-        // }
-        //
-        // Debug.Log("Reset Game called. Stack trace: " + Environment.StackTrace);
-        //
-        // isPaused = false;
-        // gameEnded = false;
-        // hasDroppedDung = false;
-        // gameStarted = false;
-        // Time.timeScale = 1;
-        //
-        // if (player != null)
-        // {
-        //     player.transform.position = SpawnPosition;
-        //     DungBallMovementController movementController = player.GetComponent<DungBallMovementController>();
-        //     if (movementController != null)
-        //     {
-        //         movementController.InitializeSize();
-        //     }
-        // }
-        //
-        // if (stampede != null)
-        // {
-        //     stampede.Reset();
-        // }
-        //
-        // if (coverageCalculator != null)
-        // {
-        //     coverageCalculator.ResetCoverage();
-        // }
-        //
-        // countdownTimer.ResetTimer();
-        //
-        // DestroyAllDungPiles();
-        //
-        // ResetGroundTexture();
+        if (currentState == GameState.NotStarted)
+        {
+            Debug.LogWarning("Cannot reset game before it has started. Ignoring ResetGame call.");
+            return;
+        }
 
+        SoundManager.Instance.Stop(gameBGMs[currentBGMIndex]);
+        SoundManager.Instance.Stop(victoryBGM);
+        SoundManager.Instance.Stop(defeatBGM);
+
+        currentState = GameState.NotStarted;
+        gameEnded = false;
+        hasDroppedDung = false;
+        isPaused = false;
+        gameStarted = false;
+        gameTimer = 0f;
+        currentBGMIndex = 0;
+
+        if (stampede != null)
+        {
+            stampede.Reset();
+        }
+
+        if (barControl != null)
+        {
+            barControl.UpdateBars(player.GetComponent<DungBallMovementController>().CurrentSize, 0f);
+        }
+
+        ResetGroundTexture();
         ReloadScene();
     }
     
@@ -308,5 +357,20 @@ public class GameManager : MonoBehaviour
         }
         countdownTimer.onCountdownStart.RemoveListener(DisablePlayerMovement);
         countdownTimer.onCountdownEnd.RemoveListener(EnablePlayerMovement);
+        if (stampede != null)
+        {
+            stampede.OnDifficultyIncreased -= HandleDifficultyIncrease;
+        }
+    }
+
+    private void HandleDifficultyIncrease(int newDifficultyLevel)
+    {
+        if (currentBGMIndex < gameBGMs.Length - 1)
+        {
+            currentBGMIndex++;
+            SoundManager.Instance.Stop(gameBGMs[currentBGMIndex - 1]);
+            SoundManager.Instance.Play(gameBGMs[currentBGMIndex]);
+            Debug.Log($"Switched to BGM: {gameBGMs[currentBGMIndex]}");
+        }
     }
 }
