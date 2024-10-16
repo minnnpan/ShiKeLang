@@ -23,7 +23,7 @@ public class TextureCoverageAnalyzer : MonoBehaviour
             float averageCoveredPixels = (coveredPixelsR + coveredPixelsG + coveredPixelsB) / 3f;
             float coverageRatio = averageCoveredPixels / totalPixels;
             
-            float displayValue = (1 - coverageRatio) * 20;
+            float displayValue = (1 - coverageRatio) * 50;
             
             return displayValue;
         }

@@ -221,7 +221,7 @@ public class GameManager : MonoBehaviour
     public void EndGame(EndGameCondition gameCondition)
     {
         if (currentState != GameState.Playing) return;
-
+        StopAllCoroutines();
         currentState = GameState.Ended;
         gameEnded = true;
         isPaused = false;
@@ -230,11 +230,11 @@ public class GameManager : MonoBehaviour
         // Play victory or defeat sound
         if (gameCondition == EndGameCondition.win)
         {
-            SoundManager.Instance.Play(victorySound);
+            //SoundManager.Instance.Play(victorySound);
         }
         else
         {
-            SoundManager.Instance.Play(defeatSound);
+            //SoundManager.Instance.Play(defeatSound);
         }
 
         // Stop game BGM
@@ -262,11 +262,11 @@ public class GameManager : MonoBehaviour
         // Play victory or defeat BGM
         if (gameCondition == EndGameCondition.win)
         {
-            SoundManager.Instance.Play(victoryBGM);
+            // SoundManager.Instance.Play(victoryBGM);
         }
         else
         {
-            SoundManager.Instance.Play(defeatBGM);
+            // SoundManager.Instance.Play(defeatBGM);
         }
     }
 
